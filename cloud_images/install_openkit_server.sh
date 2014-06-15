@@ -1,10 +1,10 @@
-#!/bin/sh
 echo "gem: --no-rdoc --no-ri" > ~/.gemrc
 
 sudo apt-get install -y git
-git clone https://github.com/Gameeso/openkit-server.git
-cd openkit-server/
-cd dashboard/
+git clone -b development https://github.com/Gameeso/openkit-server.git
+cd openkit-server/dashboard
+
+sudo apt-get install -y python-software-properties software-properties-common
 sudo apt-add-repository -y ppa:brightbox/ruby-ng
 sudo apt-get update
 
