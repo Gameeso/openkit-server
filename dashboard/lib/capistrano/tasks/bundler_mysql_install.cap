@@ -1,0 +1,8 @@
+namespace :bundler do
+  before :install, 'bundler:set_mysql_dirs'
+  task :set_mysql_dirs do
+    on roles(:app) do
+      execute "bundle config build.mysql2 --with-mysql-config=/usr/lib/mysql/mysql_config"
+    end
+  end
+end

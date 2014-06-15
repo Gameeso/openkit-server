@@ -1,0 +1,88 @@
+require_relative 'unicorn_helper'
+include UnicornHelper
+
+# cap <stage> unicorn:upgrade
+# cap <stage> unicorn:ps
+#
+# Signal reference here:
+#   http://unicorn.bogomips.org/SIGNALS.html
+#
+namespace :unicorn do
+
+  set :pid_file,     -> {"#{shared_path}/tmp/pids/unicorn.pid"}
+  set :old_pid_file, -> {"#{shared_path}/tmp/pids/unicorn.pid.oldbin"}
+
+  desc 'start'
+  task :start do
+    on roles(:app), in: :sequence do |host|
+      if file_exists? fetch(:pid_file)
+        error "pid file already exists on #{host}, skipping."
+      else
+        clean_start fetch(:stage)
+      end
+    end
+  end
+
+  desc 'graceful shutdown'
+  task :graceful_shutdown do
+    on roles(:app), in: :sequence do |host|
+      pid = contents_of fetch(:pid_file)
+      if pid
+        kill pid, 'QUIT'
+      else
+        error "No unicorn.pid found on #{host}, not shutting down."
+      end
+    end
+  end
+
+  desc 'prepare the unicorns'
+  task :upgrade do
+    on roles(:app) do |host|
+      pid = contents_of fetch(:pid_file)
+      if pid
+        kill pid, 'USR2'
+        sleep 5
+        old_pid = contents_of fetch(:old_pid_file)
+        if old_pid
+          kill old_pid, 'QUIT'
+        else
+          error "Can't shutdown old master!  You now have some workers with stale application code"
+        end
+      else
+        clean_start fetch(:stage)
+      end
+    end
+  end
+
+  desc 'shutdown old'
+  task :shutdown_old do
+    on roles(:app) do |host|
+      old_pid = contents_of fetch(:old_pid_file)
+      if old_pid
+        kill old_pid, 'QUIT'
+      else
+        warn "No unicorn.pid.oldbin found on #{host}, skipping."
+      end
+    end
+  end
+
+  desc 'ps status'
+  task :ps do
+    on roles(:app), in: :sequence, wait: 5 do |host|
+      puts "\nStatus on host #{host}...\n"
+      output = capture "ps -fp $(pgrep -d, -f unicorn)"
+      puts output unless fetch(:log_level) == :debug   # Don't display twice
+    end
+  end
+
+  desc 'say hi'
+  task :say_hi do
+    on roles(:app), in: :sequence, wait: 1 do |host|
+      puts %Q(Host is: #{host}
+              node_label is: #{host.properties.node_label}
+              stage is: #{fetch :stage})
+
+      execute "echo 'hello!'"
+    end
+  end
+end

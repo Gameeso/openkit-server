@@ -1,46 +1,59 @@
-openkit-server
-===============
+# Welcome to the Gameeso Server
 
-After downloading build required gems with:
-```
-	$ bundle install
-```
+The Gameeso server is what maintains and keeps your user's data. This is where your games connect to.
+There are a few ways to get a Gameeso Server.
 
 
-Start delayed _ job locally with:
-```
-	$ rake jobs:work
-```
+##Hosted Solution (easiest way)
+**Coming soon...**
 
-See a list of all rake-able jobs:
-```
-	$ bundle exec rake -T
-```
+##Local server (for testing or development)
+**Platform-agnostic**
 
-Start server with:
-```
-	$ rails server
-```
+`stuff written like this are commands!`
 
-To start the server using a unix socket:
-```
-	$ bundle exec thin -V start --socket /tmp/thin.sock
-```
+### Install
 
-License
--------
-OpenKit Server
-Copyright (C) 2013 OpenKit
+1. Download & install Vagrant if you haven't done already (see: [vagrantup.com](http://www.vagrantup.com/))
+2. In your terminal, create a empty directory for your server, and run: `vagrant init (coming soon)`
+3. Now boot up your dev-environment using `vagrant up`
+4. The server will automatically run on localhost using port `3000`! That being said, in your desktop, go to `http://localhost:3000` and you're on!
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
+### Work on the server
+1. If you want to make changes, contribute or otherwise edit the Gameeso server, you can just open up your file explorer to the empty (well, not so empty now huh?) directory you created in the in **step 2 of the install docs**.
+2. The sources you edit here are 100% in-sync with the Vagrant instance.
+3. You can do `git pull` to get the latest source updates from this repository.
+4. If you created a fork of Gameeso, you can remove the orignal repo and clone your fork:
+	1. Go to the /Vargrant dir: `cd /Vagrant`
+	2. Remove the current repo: `rm -rf openkit-server`
+	3. Clone your own repo: `git clone -b development https://github.com/<your name>/openkit-server.git`
+	
+		- Change < your name > to your username where you forked openkit-server to
+		
+	4. Reboot using `vagrant reload` to be sure your fork is loaded.
+	5. You can now freely edit and push your sources 
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
+##Building your image from source (not needed for development)
 
-A copy of the GNU Affero General Public License is included in this 
-repository at AGPL-License.txt.
+If you want to roll your own images, we use a sophisticated automated build system called Packer ([packer.io](packer.io))
+
+1. Download & install Vagrant if you haven't done already (see: [vagrantup.com](http://www.vagrantup.com/))
+	- It needs Vagrant because Packer also will export a Vagrant box for you.
+2. Download & install Packer if you haven't done already (see: [packer.io](http://packer.io/))
+3. Clone this repo if you want done already: `git clone -b development https://github.com/Gameeso/openkit-server.git`
+4. In your terminal, cd to the cloud_images/ directory in this repo.
+5. If you want to build a VirtualBox appliance, run `packer build -only=virtualbox-iso packer.io.json`
+	- Please note that this also will generate a Vagrant box, which you can use in the Installation tutorial.
+6. If you want to build a VMWare appliance (untested), run `packer build -only=vmware-iso packer.io.json`
+
+##FAQ
+
+### OMG you **** I want to keep my Mac!! Why using a VM?
+
+**Dont worry!** I too want to keep my tools! While engineering the images, and it's build-platform, I took into account that the VM will **just be the server**, meaning that the sources are exposed to your host-machine. You can edit & commit them with whatever you want!
+
+One thing I've seen at OpenKit is that the curve to run the server is pretty steep. There is nothing wrong with that, but I think it's better if developer can get started quicker and dive faster in the code, not having to worry about anything server-related.
+
+In order to provide a nice way for us to work on Gameeso we provide and encourage to develop in a isolated environment using Vagrant. The reason why is that we have a complicated piece of software here, with a lot of dependencies.
+
+If we were to let everyone work in their own environment we have to write a lot of instructions, for osx, linux, windows, 64bit, 32bit, and you have to follow those just to get started! No way! We want to get straight up & running, aren't we?
