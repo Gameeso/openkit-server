@@ -2,7 +2,14 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
+      "execute_command": "sudo sh '{{.Path}}'",
+      "scripts": [
+        "scripts/setup_default_user.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
       "scripts": [
         "scripts/install_openkit_server.sh"
       ]
@@ -13,6 +20,35 @@
       "scripts": [
         "scripts/bundle_install_openkit_server.sh"
       ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
+      "override": {
+        "digitalocean": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        },
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/base.sh",
+            "scripts/vagrant.sh",
+            "scripts/virtualbox.sh",
+            "scripts/cleanup.sh",
+            "scripts/zerodisk.sh"
+          ]
+        },
+        "vmware-iso": {
+          "scripts": [
+            "scripts/base.sh",
+            "scripts/vagrant.sh",
+            "scripts/vmware.sh",
+            "scripts/cleanup.sh",
+            "scripts/zerodisk.sh"
+          ]
+        }
+      }
     }
   ],
   "post-processors": [
@@ -73,11 +109,11 @@
       "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
       "iso_checksum_type": "md5",
       "iso_url": "http://mirrors.mit.edu/ubuntu-releases/trusty/ubuntu-14.04-server-amd64.iso",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
+      "ssh_username": "gameeso",
+      "ssh_password": "gameeso",
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
-      "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'gameeso'|sudo -S sh '/tmp/shutdown.sh'",
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "512" ],
         [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
@@ -116,11 +152,11 @@
       "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
       "iso_checksum_type": "md5",
       "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04-server-amd64.iso",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
+      "ssh_username": "gameeso",
+      "ssh_password": "gameeso",
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
-      "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'gameeso'|sudo -S sh '/tmp/shutdown.sh'",
       "vmx_data": {
         "memsize": "512",
         "numvcpus": "1",
