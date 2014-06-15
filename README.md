@@ -33,11 +33,18 @@ There are a few ways to get a Gameeso Server.
 	4. Reboot using `vagrant reload` to be sure your fork is loaded.
 	5. You can now freely edit and push your sources 
 
+##Building your image from source (not needed for development)
 
+If you want to roll your own images, we use a sophisticated automated build system called Packer ([packer.io](packer.io))
 
-##Building your image based on source and running locally (for development)
-
-This is the easiest way to get started.
+1. Download & install Vagrant if you haven't done already (see: [vagrantup.com](http://www.vagrantup.com/))
+	- It needs Vagrant because Packer also will export a Vagrant box for you.
+2. Download & install Packer if you haven't done already (see: [packer.io](http://packer.io/))
+3. Clone this repo if you want done already: `git clone -b development https://github.com/Gameeso/openkit-server.git`
+4. In your terminal, cd to the cloud_images/ directory in this repo.
+5. If you want to build a VirtualBox appliance, run `packer build -only=virtualbox-iso packer.io.json`
+	- Please note that this also will generate a Vagrant box, which you can use in the Installation tutorial.
+6. If you want to build a VMWare appliance (untested), run `packer build -only=vmware-iso packer.io.json`
 
 ##FAQ
 
