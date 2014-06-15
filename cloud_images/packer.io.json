@@ -13,30 +13,6 @@
       "scripts": [
         "scripts/bundle_install_openkit_server.sh"
       ]
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
-      "override": {
-        "virtualbox-iso": {
-          "scripts": [
-            "scripts/base.sh",
-            "scripts/vagrant.sh",
-            "scripts/virtualbox.sh",
-            "scripts/cleanup.sh",
-            "scripts/zerodisk.sh"
-          ]
-        },
-        "vmware-iso": {
-          "scripts": [
-            "scripts/base.sh",
-            "scripts/vagrant.sh",
-            "scripts/vmware.sh",
-            "scripts/cleanup.sh",
-            "scripts/zerodisk.sh"
-          ]
-        }
-      }
     }
   ],
   "post-processors": [
@@ -53,7 +29,17 @@
       }
     }
   ],
+  "variables": {
+    "digitalocean_client_id": "",
+    "digitalocean_api_key": ""
+  },
   "builders": [
+    {
+      "type": "digitalocean",
+      "client_id": "{{user `digitalocean_client_id`}}",
+      "api_key": "{{user `digitalocean_api_key`}}",
+      "image": "ubuntu-14-04-x64" 
+    },
     {
       "type": "virtualbox-iso",
       "boot_command": [

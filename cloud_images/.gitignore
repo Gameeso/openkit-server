@@ -5,3 +5,5 @@ output-virtualbox-iso/
 
 # For built boxes
 *.box
+
+packer_variables.json
