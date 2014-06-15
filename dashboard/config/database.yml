@@ -1,9 +1,9 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: leaderboard_dev
+  database: gameeso_dev
   username: root
-  password: 
+  password: gameeso
   host: localhost
   port: 3306
 
