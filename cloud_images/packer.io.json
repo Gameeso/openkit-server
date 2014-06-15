@@ -4,12 +4,20 @@
       "type": "docker",
       "image": "ubuntu",
       "export_path": "image.tar"
+    },
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64.ovf",
+      "ssh_username": "root",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "60s",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
     }
   ],
   "provisioners": [
     {
       "type": "shell",
-      "script": "setup_okserver.sh"
+      "script": "install_openkit_server.sh"
     }
   ]
 }
