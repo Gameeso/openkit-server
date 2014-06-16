@@ -11,8 +11,15 @@ apt-get install -y git mysql-server ruby2.1 ruby2.1-dev mysql-client libmysqlcli
 
 gem install bundle
 
-mkdir -p /vagrant
-chmod 7777 -R /vagrant
+mkdir -p /var/gameeso
+chmod 7777 -R /var/gameeso
+
+cat >/usr/bin/start_gameeso <<EOL
+cd /var/gameeso/openkit-server/dashboard
+bin/rails server
+EOL
+
+chmod a+x /usr/bin/start_gameeso
 
 cat >/etc/init/gameeso.conf <<EOL
 description "Gameeso Game Backend"
@@ -20,6 +27,14 @@ description "Gameeso Game Backend"
 start on filesystem or runlevel [2345]
 stop on run level [!2345]
  
-exec start-stop-daemon --start --chuid vagrant --chdir /vagrant/openkit-server/dashboard/ --exec "/vagrant/openkit-server/dashboard/bin/rails" \
-    -- server
+exec /usr/bin/start_gameeso
+
 EOL
+
+# Firewall
+echo "Installing firewall"
+ufw enable
+ufw allow 22
+ufw allow 80
+ufw allow 443
+ufw allow 3000

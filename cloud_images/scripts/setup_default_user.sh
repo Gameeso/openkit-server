@@ -1,3 +1,3 @@
-useradd gameeso
-adduser gameeso sudo
-echo gameeso:gameeso | /usr/sbin/chpasswd
+sudo id -u gameeso &>/dev/null sudo useradd -m gameeso
+sudo adduser gameeso sudo
+sudo echo "gameeso:$1" | /usr/sbin/chpasswd

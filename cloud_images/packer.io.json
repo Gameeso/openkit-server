@@ -2,22 +2,30 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "sudo sh '{{.Path}}'",
-      "scripts": [
-        "scripts/setup_default_user.sh"
-      ]
+      "execute_command": "sh '{{.Path}}' {{user `user_password`}}",
+      "override": {
+        "digitalocean": {
+          "scripts": [
+            "scripts/setup_default_user.sh"
+          ]
+        },
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        },
+        "vmware-iso": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        }
+      }
     },
     {
       "type": "shell",
       "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
       "scripts": [
-        "scripts/install_openkit_server.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "execute_command": "sh '{{.Path}}'",
-      "scripts": [
+        "scripts/install_openkit_server.sh",
         "scripts/bundle_install_openkit_server.sh"
       ]
     },
@@ -67,14 +75,17 @@
   ],
   "variables": {
     "digitalocean_client_id": "",
-    "digitalocean_api_key": ""
+    "digitalocean_api_key": "",
+    "user_password": "gameeso"
   },
   "builders": [
     {
       "type": "digitalocean",
       "client_id": "{{user `digitalocean_client_id`}}",
       "api_key": "{{user `digitalocean_api_key`}}",
-      "image": "ubuntu-14-04-x64" 
+      "image": "ubuntu-14-04-x64",
+      "droplet_name": "GameesoServer-{{timestamp}}",
+      "snapshot_name": "Gameeso Server {{timestamp}}"
     },
     {
       "type": "virtualbox-iso",
