@@ -15,20 +15,42 @@ mkdir -p /var/gameeso
 chmod 7777 -R /var/gameeso
 
 cat >/usr/bin/start_gameeso <<EOL
+
+mkdir -p /var/gameeso
+chmod 7777 -R /var/gameeso
+
+cd /var/gameeso
+
+if [ ! -d "openkit-server" ]; then
+	# Vagrant tends to delete contents of a synced folder once it's trying to set up synced folders.
+	# By waiting for 10 seconds we avoid to become deleted right in the middle.
+	
+	sleep 10
+	echo "Cloning & installing latest Gameeso server development branch"
+	git clone -b development https://github.com/Gameeso/openkit-server.git
+	cd openkit-server/dashboard
+
+	bundle install --path vendor/bundle
+	bundle update
+	bundle exec bin/rake db:setup RAILS_ENV=development  
+fi
+
 cd /var/gameeso/openkit-server/dashboard
 bin/rails server
+
 EOL
 
 chmod a+x /usr/bin/start_gameeso
 
 cat >/etc/init/gameeso.conf <<EOL
 description "Gameeso Game Backend"
- 
-start on filesystem or runlevel [2345]
-stop on run level [!2345]
- 
-exec /usr/bin/start_gameeso
 
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on shutdown
+
+script
+exec /usr/bin/start_gameeso
+end script
 EOL
 
 # Firewall

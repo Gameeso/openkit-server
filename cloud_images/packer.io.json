@@ -2,27 +2,6 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "sh '{{.Path}}' {{user `user_password`}}",
-      "override": {
-        "digitalocean": {
-          "scripts": [
-            "scripts/setup_default_user.sh"
-          ]
-        },
-        "virtualbox-iso": {
-          "scripts": [
-            "scripts/dummy.sh"
-          ]
-        },
-        "vmware-iso": {
-          "scripts": [
-            "scripts/dummy.sh"
-          ]
-        }
-      }
-    },
-    {
-      "type": "shell",
       "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
       "scripts": [
         "scripts/install_openkit_server.sh",
@@ -54,6 +33,27 @@
             "scripts/vmware.sh",
             "scripts/cleanup.sh",
             "scripts/zerodisk.sh"
+          ]
+        }
+      }
+    },
+    {
+      "type": "shell",
+      "execute_command": "sh '{{.Path}}' {{user `user_password`}}",
+      "override": {
+        "digitalocean": {
+          "scripts": [
+            "scripts/setup_default_user.sh"
+          ]
+        },
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        },
+        "vmware-iso": {
+          "scripts": [
+            "scripts/dummy.sh"
           ]
         }
       }

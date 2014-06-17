@@ -52,7 +52,7 @@ Gameeso can run on several cloud providers out of the box. **More provider-suppo
 	Replace the <> values by your own api key and client id
 	
 6. You are now ready to build! Run: `packer build -var-file=packer_variables.json -only=digitalocean packer.io.json`
-7. After a while you have a snapshot named 'Gameeso < random timestap >', which you can use to set up gameeso servers.
+7. After a while you have a snapshot named 'Gameeso < random timestamp >', which you can use to set up gameeso servers.
 8. After instantiating a snapshot, your server is automatically booted and running at your ip on port: 3000
 
 ##Building your image from source (not needed for development)
@@ -92,7 +92,7 @@ MySQL has a default root password 'gameeso'. **This is not a problem.** All Game
 
 ### OMG you **** I want to keep my Mac!! Why using a VM?
 
-**Dont worry!** I too want to keep my tools! While engineering the images, and it's build-platform, I took into account that the VM will **just be the server**, meaning that the sources are exposed to your host-machine. You can edit & commit them with whatever you want!
+**Dont worry!** I too want to keep my tools! While building the images I took into account that the VM will **just be the server**, meaning that the sources are exposed to your host-machine. You can edit & commit them with whatever you want!
 
 One thing I've seen at OpenKit is that the curve to run the server is pretty steep. There is nothing wrong with that, but I think it's better if developer can get started quicker and dive faster in the code, not having to worry about anything server-related.
 
