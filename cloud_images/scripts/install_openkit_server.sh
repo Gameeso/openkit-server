@@ -21,11 +21,12 @@ chmod 7777 -R /var/gameeso
 
 cd /var/gameeso
 
+# Vagrant tends to delete contents of a synced folder once it's trying to set up synced folders.
+# By waiting for 10 seconds we avoid to become deleted right in the middle.
+
+sleep 10
+
 if [ ! -d "openkit-server" ]; then
-	# Vagrant tends to delete contents of a synced folder once it's trying to set up synced folders.
-	# By waiting for 10 seconds we avoid to become deleted right in the middle.
-	
-	sleep 10
 	echo "Cloning & installing latest Gameeso server development branch"
 	git clone -b development https://github.com/Gameeso/openkit-server.git
 	cd openkit-server/dashboard
@@ -45,7 +46,7 @@ chmod a+x /usr/bin/start_gameeso
 cat >/etc/init/gameeso.conf <<EOL
 description "Gameeso Game Backend"
 
-start on (local-filesystems and net-device-up IFACE!=lo)
+start on (local-filesystems and net-device-up IFACE!=lo and started mysql)
 stop on shutdown
 
 script

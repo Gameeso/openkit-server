@@ -15,9 +15,11 @@ There are a few ways to get a Gameeso Server.
 ### Install
 
 1. Download & install Vagrant if you haven't done already (see: [vagrantup.com](http://www.vagrantup.com/))
-2. In your terminal, create a empty directory for your server, and run: `vagrant init (coming soon)`
+2. In your terminal, create a empty directory for your server, and run: `vagrant init https://github.com/Gameeso/openkit-server/releases/download/v1.0-beta-dev/gameeso-on-ubuntu-14-04-x64-virtualbox.box`
 3. Now boot up your dev-environment using `vagrant up`
 4. The server will automatically run on localhost using port `3000`! That being said, in your desktop, go to `http://localhost:3000` and you're on!
+	- ** Be aware that this can take a while for the first time **
+			Gameeso wil download and install the latest development version for you while booting up for the first time. It can take up to 10 minutes.
 
 ### Work on the server
 1. If you want to make changes, contribute or otherwise edit the Gameeso server, you can just open up your file explorer to the empty (well, not so empty now huh?) directory you created in the in **step 2 of the install docs**.
