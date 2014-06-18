@@ -1,6 +1,7 @@
 <div class="session">
 
   <h1><%= image_tag 'login_logo.png' %></h1>
-  Sorry, OpenKit has been shutdown and is not accepting new users.
+  <%= render 'form' %>
+  <p class="forgot">Already have an account? <%= link_to 'Log In', login_path %></p>
 
 </div>

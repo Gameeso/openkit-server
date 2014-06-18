@@ -18,3 +18,5 @@ pickle-email-*.html
 tmp/
 system.yml
 provisioning/tmp/
+.idea
+.DS_Store
