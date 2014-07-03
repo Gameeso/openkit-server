@@ -4,6 +4,30 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+$script = <<SCRIPT
+mkdir -p /var/gameeso
+chmod 7777 -R /var/gameeso
+
+cd /var/gameeso
+
+if [ ! -d "openkit-server" ]; then
+  echo "Cloning & installing latest Gameeso server development branch"
+  git clone -b development https://github.com/Gameeso/openkit-server.git
+  cd openkit-server/dashboard
+
+  # Copy config files
+  cp config/database.sample.yml database.yml
+  cp config/ok_config.sample.rb ok_config.rb
+
+  bundle install --path vendor/bundle
+  bundle update
+  bundle exec bin/rake db:setup RAILS_ENV=development
+fi
+
+cd /var/gameeso/openkit-server/dashboard
+bin/rails server
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

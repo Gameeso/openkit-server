@@ -11,49 +11,6 @@ apt-get install -y git mysql-server ruby2.1 ruby2.1-dev mysql-client libmysqlcli
 
 gem install bundle
 
-mkdir -p /var/gameeso
-chmod 7777 -R /var/gameeso
-
-cat >/usr/bin/start_gameeso <<EOL
-
-mkdir -p /var/gameeso
-chmod 7777 -R /var/gameeso
-
-cd /var/gameeso
-
-# Vagrant tends to delete contents of a synced folder once it's trying to set up synced folders.
-# By waiting for 10 seconds we avoid to become deleted right in the middle.
-
-sleep 10
-
-if [ ! -d "openkit-server" ]; then
-	echo "Cloning & installing latest Gameeso server development branch"
-	git clone -b development https://github.com/Gameeso/openkit-server.git
-	cd openkit-server/dashboard
-
-	bundle install --path vendor/bundle
-	bundle update
-	bundle exec bin/rake db:setup RAILS_ENV=development  
-fi
-
-cd /var/gameeso/openkit-server/dashboard
-bin/rails server
-
-EOL
-
-chmod a+x /usr/bin/start_gameeso
-
-cat >/etc/init/gameeso.conf <<EOL
-description "Gameeso Game Backend"
-
-start on (local-filesystems and net-device-up IFACE!=lo and started mysql)
-stop on shutdown
-
-script
-exec /usr/bin/start_gameeso
-end script
-EOL
-
 # Firewall
 echo "Installing firewall"
 ufw enable

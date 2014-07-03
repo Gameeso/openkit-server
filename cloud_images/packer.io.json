@@ -4,8 +4,7 @@
       "type": "shell",
       "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
       "scripts": [
-        "scripts/install_openkit_server.sh",
-        "scripts/bundle_install_openkit_server.sh"
+        "scripts/install_openkit_server.sh"
       ]
     },
     {
@@ -14,7 +13,12 @@
       "override": {
         "digitalocean": {
           "scripts": [
-            "scripts/dummy.sh"
+            "scripts/create_start_gameeso.sh"
+          ]
+        },
+        "amazon-ebs": {
+          "scripts": [
+            "scripts/create_start_gameeso.sh"
           ]
         },
         "virtualbox-iso": {
@@ -42,6 +46,11 @@
       "execute_command": "sh '{{.Path}}' {{user `user_password`}}",
       "override": {
         "digitalocean": {
+          "scripts": [
+            "scripts/setup_default_user.sh"
+          ]
+        },
+        "amazon-ebs": {
           "scripts": [
             "scripts/setup_default_user.sh"
           ]
@@ -76,6 +85,8 @@
   "variables": {
     "digitalocean_client_id": "",
     "digitalocean_api_key": "",
+    "amazon_access_key": "",
+    "amazon_secret_key": "",
     "user_password": "gameeso"
   },
   "builders": [
@@ -86,6 +97,16 @@
       "image": "ubuntu-14-04-x64",
       "droplet_name": "GameesoServer-{{timestamp}}",
       "snapshot_name": "Gameeso Server {{timestamp}}"
+    },
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `amazon_access_key`}}",
+      "secret_key": "{{user `amazon_secret_key`}}",
+      "region": "us-east-1",
+      "source_ami": "ami-ea11ef82",
+      "instance_type": "t1.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "GameesoServer-{{timestamp}}"
     },
     {
       "type": "virtualbox-iso",
