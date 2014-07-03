@@ -11,6 +11,8 @@ dashboard/db/*.sqlite3
 dashboard/public/system/*
 dashboard/coverage/
 dashboard/spec/tmp/*
+dashboard/config/database.yml
+dashboard/config/ok_config.rb
 **.orig
 rerun.txt
 pickle-email-*.html
