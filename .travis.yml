@@ -4,7 +4,8 @@ node_js:
 before_install:
   - 'sudo apt-get update -q'
   - 'sudo apt-get install -q virtualbox --fix-missing # Everything falls apart here exactly.'
-  - "wget https://dl.bintray.com/mitchellh/packer/0.6.0_linux_amd64.zip && unzip 0.6.0_linux_amd64.zip -d /usr/local"
-  - 'export PATH="$PATH:/usr/local/vagrant/bin"'
+  - "sudo wget https://dl.bintray.com/mitchellh/packer/0.6.0_linux_amd64.zip && unzip 0.6.0_linux_amd64.zip -d /usr/local"
+  - 'export PATH="$PATH:/usr/local/packer/bin"'
+  - 'ls /usr/local'
   - 'wget -nv https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.3_x86_64.deb'
   - "sudo dpkg -i vagrant_1.6.3_x86_64.deb"
