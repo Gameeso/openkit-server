@@ -10,3 +10,5 @@ before_install:
   - 'export PATH="$PATH:/usr/local/packer"'
   - 'wget -nv https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.3_x86_64.deb'
   - "sudo dpkg -i vagrant_1.6.3_x86_64.deb"
+  - "cd cloud_images/"
+  - "packer build -only=virtualbox-iso packer.io.json"
