@@ -24,11 +24,10 @@ if [ ! -d "openkit-server" ]; then
 	cd openkit-server/dashboard
 
 	# Copy config files
-	cp config/database.sample.yml database.yml
-	cp config/ok_config.sample.rb ok_config.rb
+	cp config/database.sample.yml config/database.yml
+	cp config/ok_config.sample.rb config/ok_config.rb
 
 	bundle install --path vendor/bundle
-	bundle update
 	bundle exec bin/rake db:setup RAILS_ENV=development
 fi
 
