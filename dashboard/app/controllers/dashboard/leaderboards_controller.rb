@@ -14,7 +14,7 @@ class LeaderboardsController < ApplicationController
     @leaderboard = @app.leaderboards.find(params[:id].to_i)
     score_class = params[:sandbox] ? SandboxScore : Score
     @top_scores = score_class.bests_1_0(@leaderboard.id)
-    ActiveRecord::Associations::Preloader.new(@top_scores, [:user]).run
+    ActiveRecord::Associations::Preloader.new().preload(@top_scores, [:user])
   end
 
   def new

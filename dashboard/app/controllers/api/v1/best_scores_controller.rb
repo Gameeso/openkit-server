@@ -9,13 +9,13 @@ class BestScoresController < ApplicationController
     x = params.delete(:page_num)
     y = params.delete(:num_per_page)
     @scores = score_class.bests_1_0(@leaderboard.id, {page_num: x, num_per_page: y})
-    ActiveRecord::Associations::Preloader.new(@scores, [:user]).run
+    ActiveRecord::Associations::Preloader.new().preload(@score, [:user])
     render json: @scores
   end
 
   def user
     @score = score_class.best_1_0(@leaderboard.id, params[:user_id])
-    ActiveRecord::Associations::Preloader.new(@score, [:user]).run
+    ActiveRecord::Associations::Preloader.new().preload(@score, [:user])
     render json: @score
   end
 

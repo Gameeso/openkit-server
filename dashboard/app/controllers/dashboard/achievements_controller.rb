@@ -9,7 +9,7 @@ class AchievementsController < ApplicationController
   def show
     @achievement = @app.achievements.find(params[:id].to_i)
     @achievement_scores = @achievement.best_scores
-    ActiveRecord::Associations::Preloader.new(@achievement_scores, [:user]).run
+    ActiveRecord::Associations::Preloader.new().preload(@achievement_scores, [:user])
   end
 
   def new
