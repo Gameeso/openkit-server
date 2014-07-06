@@ -6,7 +6,7 @@ module OKConfig
     {
       :database_name            => nil || 'ok_api',
       :database_username        => nil || 'root',
-      :database_password        => nil || '',
+      :database_password        => nil || 'gameeso',
       :database_host            => nil || '127.0.0.1',
       :database_port            => nil || '3306',
       :redis_host               => nil || '127.0.0.1',
