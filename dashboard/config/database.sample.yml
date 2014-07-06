@@ -1,11 +1,11 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: gameeso_dev
-  username: root
-  password: gameeso
-  host: localhost
-  port: 3306
+  database: <%= OKConfig[:database_name] %>
+  username: <%= OKConfig[:database_username] %>
+  password: <%= OKConfig[:database_password] %>
+  host: <%= OKConfig[:database_host] %>
+  port: <%= OKConfig[:database_port] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
