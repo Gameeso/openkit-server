@@ -4,7 +4,7 @@ class LeaderboardsController < ApplicationController
 
   def index
     if params[:tag]
-      @leaderboards = @app.leaderboards.tagged_with(params[:tag].to_s).order(:priority)
+      @leaderboards = @app.leaderboards.tagged_with(params[:tag].to_s)
     else
       @leaderboards = @app.leaderboards.order(:priority)
     end
