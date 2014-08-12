@@ -43,11 +43,35 @@ importData(
             "created_at": "2014-07-06T21:17:01.000Z",
             "custom_id": null,
             "developer_id": 1,
-            "fb_id": "100002273765146",
+            "fb_id": "100102273765146",
             "gamecenter_id": null,
             "google_id": null,
             "id": 1,
             "nick": "Peter Willemsen",
+            "twitter_id": null,
+            "updated_at": "2014-07-06T21:17:01.000Z"
+        },
+        {
+            "created_at": "2014-07-06T21:17:01.000Z",
+            "custom_id": null,
+            "developer_id": 1,
+            "fb_id": "100002273765246",
+            "gamecenter_id": null,
+            "google_id": null,
+            "id": 2,
+            "nick": "DJ Willemsen",
+            "twitter_id": null,
+            "updated_at": "2014-07-06T21:17:01.000Z"
+        }
+        {
+            "created_at": "2014-07-06T21:17:01.000Z",
+            "custom_id": null,
+            "developer_id": 1,
+            "fb_id": "100002273765146",
+            "gamecenter_id": null,
+            "google_id": null,
+            "id": 5,
+            "nick": "Sak Willemsen",
             "twitter_id": null,
             "updated_at": "2014-07-06T21:17:01.000Z"
         }

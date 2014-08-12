@@ -9,6 +9,7 @@ global.log = (msg) ->
 
 global.knex = require("knex")(
   client: "mysql"
+  debug: yes
   connection:
     host: argv[2]
     user: argv[3]
