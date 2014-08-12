@@ -1,38 +1,6 @@
-argv = process.argv
+require "./Globals"
 
-log = (msg) ->
-    arguments_ = ['Gameeso-Importer -> ']
-    for arg in arguments
-      arguments_.push arg
-
-    console.log.apply console, arguments_
-
-knex = require("knex")(
-  client: "mysql"
-  connection:
-    host: argv[2]
-    user: argv[3]
-    password: argv[4]
-    database: argv[5]
-)
-
-importData = (attrs) ->
-
-  log "importData: ", attrs
-
-  app_id = attrs.app_id
-  knex("apps").where(
-    id: app_id
-  ).then (rows) ->
-    log "Rows: ", rows
-
-    if rows.length > 0
-      # app exists, now lop over data to import
-
-      
-
-    else
-      log "Error: no such app"
+importData = require "./Importer"
 
 importData(
   app_id: 1
