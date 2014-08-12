@@ -1,7 +1,8 @@
 module OpenKit
 
   class Config
-    @host = 'api.openkit.io'  # default
+    #the host can also be changes to support your own server
+    @host = 'api.gameeso.com'  # default
     class << self
       attr_accessor :app_key, :secret_key
       attr_accessor :host
