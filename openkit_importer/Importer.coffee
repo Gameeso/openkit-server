@@ -28,14 +28,33 @@ module.exports = (attrs) ->
     log "Rows: ", rows
 
     if rows.length > 0
-      # app exists, now lop over data to import
+      # app exists, now loop over data to import
+
+      doScores = (leaderboard) ->
+        for score in leaderboard.scores
+          log "Score: ", score
+          obj = extendWithoutID({}, score)
+          obj.sort_value = obj.value
+          obj = deleteKeys obj, ["is_users_best", "meta_doc_url", "rank", "value"]
+
+          obj.leaderboard_id = mapper.is("leaderboard", obj.leaderboard_id)
+          obj.user_id = mapper.is("user", obj.user_id)
+
+          knex.insert(obj).into("scores").then (inserts) ->
+            log "inserts: ", inserts
+            for id in inserts
+              mapper.map "score", score.id, id
+
+            mapper.dump()
+
+        return null
 
       startOnLeaderboard = ->
         for leaderboard_ in data.leaderboards
           ((leaderboard) ->
             obj = extendWithoutID({}, leaderboard)
             obj = deleteKeys obj, ["icon_url", "player_count", "scores"]
-            obj["app_id"] = app_id
+            obj.app_id = app_id
 
             if obj.sort_type != "HighValue" and obj.sort_type != "LowValue"
               obj.sort_type = "HighValue"
@@ -44,6 +63,7 @@ module.exports = (attrs) ->
               log "inserts: ", inserts
               for id in inserts
                 mapper.map "leaderboard", leaderboard.id, id
+                doScores leaderboard
           )(leaderboard_)
 
       startOnUsers = ->

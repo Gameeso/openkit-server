@@ -26,7 +26,7 @@ importData(
                     "display_string": null,
                     "id": 3,
                     "is_users_best": true,
-                    "leaderboard_id": 1,
+                    "leaderboard_id": 54,
                     "meta_doc_url": null,
                     "metadata": 0,
                     "rank": 1,
