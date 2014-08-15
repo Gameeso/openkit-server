@@ -148,7 +148,7 @@ p.forgot{
 }
 
 a.account {
-  
+
   @include transition;
 
   i{
@@ -481,7 +481,7 @@ input[type="text"]:focus, input[type="password"]:focus{
 }
 
 .resources{
-  
+
   li{
     overflow:hidden;
   }
@@ -489,11 +489,11 @@ input[type="text"]:focus, input[type="password"]:focus{
   p{
 
   }
-  
+
   a{
     padding:5px 0;
   }
-  
+
   img{
     float:left;
     margin-right:20px;
@@ -501,12 +501,27 @@ input[type="text"]:focus, input[type="password"]:focus{
     height:auto;
     position:relative;
     top:0px;
-  }  
+  }
 
 }
 
 .services{
-
+  p {
+    display:block; float: left;
+    span {
+      margin:0;
+      padding:0;
+      display:bock;
+      text-decoration:none;
+      color:#666;
+      font-size:14px;
+    }
+    a.inner_link {
+      float:none !important;
+      display:inline !important;
+      font-size:14px;
+    }
+  }
   a{
     text-decoration:none;
     display:block;
@@ -520,7 +535,7 @@ input[type="text"]:focus, input[type="password"]:focus{
     span{
       margin:0;
       padding:0;
-      display:bock; 
+      display:bock;
       text-decoration:none;
       color:#666;
       font-size:14px;
@@ -531,5 +546,3 @@ input[type="text"]:focus, input[type="password"]:focus{
   }
 
 }
-
-
