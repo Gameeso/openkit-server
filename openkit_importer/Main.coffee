@@ -15,8 +15,8 @@ importData(
             "icon_file_name": null,
             "icon_file_size": null,
             "icon_updated_at": null,
-            "icon_url": "http://api.gameeso.comhttps://ok-shared.s3-us-west-2.amazonaws.com/leaderboard_icon.png",
-            "id": 1,
+            "icon_url": "https://ok-shared.s3-us-west-2.amazonaws.com/leaderboard_icon.png",
+            "id": 54,
             "name": "Poopie!",
             "player_count": 1,
             "priority": 100,
@@ -34,7 +34,7 @@ importData(
                     "value": 30
                 }
             ],
-            "sort_type": "HighValue",
+            "sort_type": "FuckingHighValue",
             "updated_at": "2014-07-06T15:17:27.000Z"
         }
     ],

@@ -8,6 +8,16 @@ extendWithoutID = (obj1, obj2) ->
     result[val] = obj2[val]  if val isnt "id" and obj2.hasOwnProperty(val)
   result
 
+deleteKeys = (obj, keysToDelete) ->
+
+  obj2 = {}
+
+  for key, val of obj
+    if keysToDelete.indexOf(key) is -1
+      obj2[key] = val
+
+  return obj2
+
 module.exports = (attrs) ->
   app_id = attrs.app_id
   data = attrs.data
@@ -21,11 +31,26 @@ module.exports = (attrs) ->
       # app exists, now lop over data to import
 
       startOnLeaderboard = ->
+        for leaderboard_ in data.leaderboards
+          ((leaderboard) ->
+            obj = extendWithoutID({}, leaderboard)
+            obj = deleteKeys obj, ["icon_url", "player_count", "scores"]
+            obj["app_id"] = app_id
 
+            if obj.sort_type != "HighValue" and obj.sort_type != "LowValue"
+              obj.sort_type = "HighValue"
+
+            knex.insert(obj).into("leaderboards").then (inserts) ->
+              log "inserts: ", inserts
+              for id in inserts
+                mapper.map "leaderboard", leaderboard.id, id
+          )(leaderboard_)
 
       startOnUsers = ->
+        callbackCount = 0
         for user_ in data.users
           ((user) ->
+            callbackCount++
             knex("users").where(->
               @where "fb_id", user.fb_id
               @whereNotNull "fb_id"
@@ -47,22 +72,24 @@ module.exports = (attrs) ->
               if rows.length == 0
                 # 0 rows means we have to insert a new user
                 knex.insert(extendWithoutID {}, user).into("users").then (inserts) ->
+                  callbackCount--
                   log "inserts: ", inserts
                   for id in inserts
                     mapper.map "user", user.id, id
 
-                  startOnLeaderboard()
+                  startOnLeaderboard() if callbackCount is 0
 
               else
+                callbackCount--
                 log "rows: ", rows
                 for row in rows
                   mapper.map "user", user.id, row.id
 
-                startOnLeaderboard()
+                startOnLeaderboard() if callbackCount is 0
 
           )(user_)
 
-        startOnUsers()
+      startOnUsers()
 
     else
       log "Error: no such app"
