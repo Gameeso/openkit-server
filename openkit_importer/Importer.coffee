@@ -1,3 +1,6 @@
+Mapper = require "./Mapper"
+mapper = new Mapper
+
 extendWithoutID = (obj1, obj2) ->
   result = obj1
   val = undefined
@@ -17,32 +20,49 @@ module.exports = (attrs) ->
     if rows.length > 0
       # app exists, now lop over data to import
 
-      for user_ in data.users
-        ((user) ->
-          knex("users").where(->
-            @where "fb_id", user.fb_id
-            @whereNotNull "fb_id"
+      startOnLeaderboard = ->
 
-            return null
-          ).orWhere(->
-            @where "google_id", user.google_id
-            @whereNotNull "google_id"
 
-            return null
-          )
-          .orWhere(->
-            @where "gamecenter_id", user.gamecenter_id
-            @whereNotNull "gamecenter_id"
+      startOnUsers = ->
+        for user_ in data.users
+          ((user) ->
+            knex("users").where(->
+              @where "fb_id", user.fb_id
+              @whereNotNull "fb_id"
 
-            return null
-          )
-          .then (rows) ->
-            if rows.length == 0
-              # 0 rows means we have to insert a new user
-              knex.insert(extendWithoutID {}, user).into("users").then (inserts) ->
-                log "inserts: ", inserts
+              return null
+            ).orWhere(->
+              @where "google_id", user.google_id
+              @whereNotNull "google_id"
 
-        )(user_)
+              return null
+            )
+            .orWhere(->
+              @where "gamecenter_id", user.gamecenter_id
+              @whereNotNull "gamecenter_id"
+
+              return null
+            )
+            .then (rows) ->
+              if rows.length == 0
+                # 0 rows means we have to insert a new user
+                knex.insert(extendWithoutID {}, user).into("users").then (inserts) ->
+                  log "inserts: ", inserts
+                  for id in inserts
+                    mapper.map "user", user.id, id
+
+                  startOnLeaderboard()
+
+              else
+                log "rows: ", rows
+                for row in rows
+                  mapper.map "user", user.id, row.id
+
+                startOnLeaderboard()
+
+          )(user_)
+
+        startOnUsers()
 
     else
       log "Error: no such app"

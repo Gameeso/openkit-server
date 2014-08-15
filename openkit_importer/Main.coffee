@@ -62,7 +62,7 @@ importData(
             "nick": "DJ Willemsen",
             "twitter_id": null,
             "updated_at": "2014-07-06T21:17:01.000Z"
-        }
+        },
         {
             "created_at": "2014-07-06T21:17:01.000Z",
             "custom_id": null,
@@ -73,6 +73,18 @@ importData(
             "id": 5,
             "nick": "Sak Willemsen",
             "twitter_id": null,
+            "updated_at": "2014-07-06T21:17:01.000Z"
+        },
+        {
+            "created_at": "2014-07-06T21:17:01.000Z",
+            "custom_id": null,
+            "developer_id": 1,
+            "fb_id": "383834",
+            "gamecenter_id": null,
+            "google_id": "238u4233343",
+            "id": 21,
+            "nick": "Kut Willemsen",
+            "twitter_id": "kuttwitter",
             "updated_at": "2014-07-06T21:17:01.000Z"
         }
     ]
