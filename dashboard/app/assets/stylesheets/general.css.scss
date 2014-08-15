@@ -15,6 +15,14 @@ a{
   &:hover{color:darkblue;}
 }
 
+.box {
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 20px;
+  }
+}
+
 .session{
   width: 320px;
   margin: 40px auto 0 -160px;

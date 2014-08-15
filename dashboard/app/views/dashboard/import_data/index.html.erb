@@ -1,2 +1,35 @@
-<h1>Dashboard::ImportData#index</h1>
-<p>Find me in app/views/dashboard/import_data/index.html.erb</p>
+<div class="col_75 center">
+  <div class="box">
+
+<%= form_tag app_import_data_path(@app) do %>
+
+  <h2>Import OpenKit Data</h2>
+
+  <div class="field">
+
+      Many of you have propably used OpenKit before hearing about Gameeso, and also saved your OpenKit data using the Exporter released way before our beta to secure data, preventing players losing their game stats (and preventing you from losing your users!)
+      <br /><br />
+      To import your data back into Gameeso, please upload your JSON below.
+      <br /><br />
+      <ul>
+        <li>
+          - Importing data works only if the data is exported using the OpenKit exporter (see: <a href="https://github.com/Gameeso/OpenKit-Exporter">https://github.com/Gameeso/OpenKit-Exporter</a>)
+        </li>
+        <li>
+          - Imported data can safely coexist with existing Gameeso data. (this means that if you already run your game trough Gameeso and have openkit data to import you can safely do that)
+        </li>
+        <li>
+          - Our importer works in the background, please wait a minute or 2 to make sure the data is arrived, it won't happen immediatly.
+        </li>
+    </label>
+
+    <br />
+    <%= file_field_tag :icon %>
+  </div>
+
+  <%= submit_tag "Import Data" %>
+
+<% end %>
+
+</div>
+</div>
