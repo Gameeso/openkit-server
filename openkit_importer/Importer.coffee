@@ -25,7 +25,9 @@ module.exports = (attrs) ->
     defaultCatch = (error) ->
       trx.rollback()
       log "Error:", error, "\nRolled back."
-      return
+      process.exit 1
+
+    mapper.defaultCatch = defaultCatch
 
     lastObjectHasBeenSaved = ->
       trx.commit()
@@ -139,7 +141,6 @@ module.exports = (attrs) ->
             ((user) ->
               if fbIDPreventer.isDuplicate(user.fb_id) or googleIDPreventer.isDuplicate(user.google_id) or gameCenterIDPreventer.isDuplicate(user.gamecenter_id)
                 defaultCatch()
-                process.exit 1
 
               callbackCount++
               trx("users").where(->
@@ -163,7 +164,9 @@ module.exports = (attrs) ->
                 log "user rows: ", rows.length
                 if rows.length == 0
                   # 0 rows means we have to insert a new user
-                  trx.insert(extendWithoutID {}, user).into("users").then((inserts) ->
+                  obj = extendWithoutID {}, user
+                  obj = deleteKeys obj, ["developer_id"]
+                  trx.insert(obj).into("users").then((inserts) ->
                     callbackCount--
                     log "inserts: ", inserts
                     for id in inserts
