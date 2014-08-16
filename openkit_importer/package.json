@@ -1,0 +1,15 @@
+{
+  "name": "openkit_importer",
+  "version": "0.1.0",
+  "description": "Importer script for OpenKit Exporter (https://github.com/Gameeso/OpenKit-Exporter) data",
+  "main": "Main.coffe",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "mysql": "~2.4.2",
+    "knex": "~0.6.22"
+  }
+}

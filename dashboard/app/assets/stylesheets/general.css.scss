@@ -15,6 +15,20 @@ a{
   &:hover{color:darkblue;}
 }
 
+.box {
+  .box_image {
+    width: 100%;
+  }
+  p.box_text {
+    padding: 4px!important;
+  }
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 20px;
+  }
+}
+
 .session{
   width: 320px;
   margin: 40px auto 0 -160px;
@@ -97,6 +111,15 @@ a{
   li{margin:5px;color:#f9d8d8}
 }
 
+.list {
+  ul{list-style-type:disc;list-style-position:inside;}
+  li{margin:5px;}
+
+  ul.sublist {
+    margin-left: 10px;
+  }
+}
+
 p.forgot{
   text-align:center;
   font-weight: normal;
@@ -148,7 +171,7 @@ p.forgot{
 }
 
 a.account {
-  
+
   @include transition;
 
   i{
@@ -203,6 +226,11 @@ a.account {
     &:hover{color:#000}
   }
   span{color:#999;}
+}
+
+a.green_button {
+  @include rounded(3px);
+  @include greenButton;
 }
 
 .header a.header_button{
@@ -481,7 +509,7 @@ input[type="text"]:focus, input[type="password"]:focus{
 }
 
 .resources{
-  
+
   li{
     overflow:hidden;
   }
@@ -489,11 +517,11 @@ input[type="text"]:focus, input[type="password"]:focus{
   p{
 
   }
-  
+
   a{
     padding:5px 0;
   }
-  
+
   img{
     float:left;
     margin-right:20px;
@@ -501,12 +529,27 @@ input[type="text"]:focus, input[type="password"]:focus{
     height:auto;
     position:relative;
     top:0px;
-  }  
+  }
 
 }
 
 .services{
-
+  p {
+    display:block; float: left;
+    span {
+      margin:0;
+      padding:0;
+      display:bock;
+      text-decoration:none;
+      color:#666;
+      font-size:14px;
+    }
+    a.inner_link {
+      float:none !important;
+      display:inline !important;
+      font-size:14px;
+    }
+  }
   a{
     text-decoration:none;
     display:block;
@@ -520,7 +563,7 @@ input[type="text"]:focus, input[type="password"]:focus{
     span{
       margin:0;
       padding:0;
-      display:bock; 
+      display:bock;
       text-decoration:none;
       color:#666;
       font-size:14px;
@@ -531,5 +574,3 @@ input[type="text"]:focus, input[type="password"]:focus{
   }
 
 }
-
-
