@@ -9,3 +9,23 @@
     The changes have been rolled back.
   </div>
 <% end %>
+
+<% if defined?(@success) %>
+
+  <div class="session">
+    <div class="box">
+      <%= image_tag("wedidit.jpg", class: "box_image") %>
+      <br />
+      <p class="box_text">
+        <b align="center">
+          You did it!
+        </b>
+
+        Your leaderboards, scores and users have been successfully imported to your application.
+        <a href="<%=app_path(@app)%>">You can now go back to your application.</a>
+      </p>
+    </div>
+  </div>
+
+
+<% end %>

@@ -43,7 +43,7 @@ class Dashboard::ImportDataController < ApplicationController
         File.delete fileName
 
         if result
-
+          @success = true
         else
           @error = errJsonFail
         end

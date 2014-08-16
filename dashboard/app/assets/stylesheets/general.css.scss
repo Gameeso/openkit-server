@@ -16,6 +16,12 @@ a{
 }
 
 .box {
+  .box_image {
+    width: 100%;
+  }
+  p.box_text {
+    padding: 4px!important;
+  }
   h2 {
     font-size: 18px;
     font-weight: bold;
