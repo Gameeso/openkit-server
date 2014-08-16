@@ -1,7 +1,7 @@
 <div class="col_75 center">
   <div class="box">
 
-<%= form_tag app_import_data_path(@app) do %>
+<%= form_tag({action: :index}, multipart: true) do %>
 
   <h2>Import OpenKit Data</h2>
 
@@ -21,10 +21,10 @@
         <li>
           - Our importer works in the background, please wait a minute or 2 to make sure the data is arrived, it won't happen immediatly.
         </li>
-    </label>
+      </ul>
 
     <br />
-    <%= file_field_tag :icon %>
+    <%= file_field_tag :datafile %>
   </div>
 
   <%= submit_tag "Import Data" %>

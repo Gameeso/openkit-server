@@ -75,8 +75,8 @@ OKDashboard::Application.routes.draw do
         resources :leaderboards do
           delete :delete_sandbox_scores
         end
-        resources :import_data
         resources :achievements
+        resources :import_data
         resource :sandbox_push_cert,          only: [:new, :create, :destroy]
         resource :production_push_cert,       only: [:new, :create, :destroy]
 

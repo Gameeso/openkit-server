@@ -29,6 +29,7 @@ module.exports = (attrs) ->
     lastObjectHasBeenSaved = ->
       trx.commit()
       log "Done!"
+      process.exit(0)
 
     app_id = attrs.app_id
     data = attrs.data
