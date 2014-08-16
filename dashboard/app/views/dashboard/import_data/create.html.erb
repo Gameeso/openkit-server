@@ -1,1 +1,11 @@
-lol
+<% if defined?(@error) %>
+  <div id="error_explanation">
+    <h2>There was an error while importing your OpenKit-data: </h2>
+
+    <ul>
+    <li><%=@error%></li>
+    </ul>
+
+    The changes have been rolled back.
+  </div>
+<% end %>

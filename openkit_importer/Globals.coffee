@@ -7,12 +7,13 @@ global.log = (msg) ->
 
     console.log.apply console, arguments_
 
-global.knex = require("knex")(
-  client: "mysql"
-  debug: yes
-  connection:
-    host: argv[2]
-    user: argv[3]
-    password: argv[4]
-    database: argv[5]
-)
+global.connectToDB = ->
+  global.knex = require("knex")(
+    client: "mysql"
+    debug: yes
+    connection:
+      host: argv[2]
+      user: argv[3]
+      password: argv[4]
+      database: argv[5]
+  )
