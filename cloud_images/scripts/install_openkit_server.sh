@@ -9,7 +9,7 @@ apt-get update
 echo mysql-server mysql-server/root_password password gameeso | sudo debconf-set-selections
 echo mysql-server mysql-server/root_password_again password gameeso | sudo debconf-set-selections
 
-apt-get install -y git nodejs npm mysql-server ruby2.1 ruby2.1-dev mysql-client libmysqlclient-dev libsqlite3-dev libxslt1-dev redis-server build-essential
+apt-get install -y git nodejs mysql-server ruby2.1 ruby2.1-dev mysql-client libmysqlclient-dev libsqlite3-dev libxslt1-dev redis-server build-essential
 
 ln -s /usr/bin/nodejs /usr/bin/node
 
