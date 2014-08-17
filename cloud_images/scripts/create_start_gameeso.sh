@@ -11,7 +11,22 @@ exec /usr/bin/start_gameeso
 end script
 EOL
 
-cat >/usr/bin/start_gameeso <<EOL
+# Upstart doesnt work on Docker for obvious reasons, so we run the dependency stuff on our own
+if [ "$PACKER_BUILDER_TYPE" = "docker" ]; then
+cat >>/usr/bin/start_gameeso <<EOL
+redis-server &
+EOL
+
+# only start MySQL if in standalone mode
+if [ "$GAMEESO_MODE" = "standalone" ]; then
+cat >>/usr/bin/start_gameeso <<EOL
+		/etc/init.d/mysql start
+EOL
+fi
+
+fi
+
+cat >>/usr/bin/start_gameeso <<EOL
 
 mkdir -p /var/gameeso
 chmod 7777 -R /var/gameeso
@@ -25,10 +40,10 @@ if [ ! -d "openkit-server" ]; then
 
 	# Copy config files
 	cp config/database.sample.yml config/database.yml
-	cp config/ok_config.sample.rb config/ok_config.rb
+	cp /root/ok_config.rb config/ok_config.rb
 
 	bundle install --path vendor/bundle
-	bundle exec bin/rake db:setup RAILS_ENV=development
+	bundle exec bin/rake db:setup
 fi
 
 cd /var/gameeso/openkit-server/dashboard

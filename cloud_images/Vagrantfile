@@ -22,7 +22,7 @@ if [ ! -d "openkit-server" ]; then
 
   echo "Copying config files..."
   cp config/database.sample.yml config/database.yml
-  cp config/ok_config.sample.rb config/ok_config.rb
+  cp /root/ok_config.rb config/ok_config.rb
 
   bundle install --path vendor/bundle
   bundle exec bin/rake db:setup RAILS_ENV=development

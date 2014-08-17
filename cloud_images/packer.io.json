@@ -32,15 +32,55 @@
       }
     },
     {
+      "type": "file",
+      "source": "{{user `config_file`}}",
+      "destination": "/root/ok_config.rb"
+    },
+    {
+      "environment_vars": [
+        "GAMEESO_MODE='{{user `mode`}}'",
+        "GAMEESO_USER_PASSWORD='{{user `user_password`}}'"
+      ],
       "type": "shell",
-      "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
+      "execute_command": "echo '{{user `user_password`}}'|sudo -S {{ .Vars }} sh '{{.Path}}'",
       "scripts": [
         "scripts/install_openkit_server.sh"
       ]
     },
     {
       "type": "shell",
-      "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
+      "execute_command": "echo '{{user `user_password`}}'|sudo -S sh '{{.Path}}'",
+      "override": {
+        "docker": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        },
+        "digitalocean": {
+          "scripts": [
+            "scripts/setup_firewall.sh"
+          ]
+        },
+        "amazon-ebs": {
+          "scripts": [
+            "scripts/setup_firewall.sh"
+          ]
+        },
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/setup_firewall.sh"
+          ]
+        },
+        "vmware-iso": {
+          "scripts": [
+            "scripts/setup_firewall.sh"
+          ]
+        }
+      }
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo '{{user `user_password`}}'|sudo -S {{ .Vars }} sh '{{.Path}}'",
       "override": {
         "digitalocean": {
           "scripts": [
@@ -81,6 +121,7 @@
   "post-processors": [
     {
       "type": "vagrant",
+      "only": ["virtualbox-iso", "vmware-iso"],
       "vagrantfile_template": "Vagrantfile",
       "override": {
         "virtualbox": {
@@ -93,11 +134,13 @@
     }
   ],
   "variables": {
+    "mode": "standalone",
     "digitalocean_client_id": "",
     "digitalocean_api_key": "",
     "amazon_access_key": "",
     "amazon_secret_key": "",
-    "user_password": "gameeso"
+    "user_password": "gameeso",
+    "config_file": "config/ok_config.sample.rb"
   },
   "builders": [
     {
