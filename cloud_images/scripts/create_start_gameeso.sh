@@ -24,12 +24,6 @@ cat >>/usr/bin/start_gameeso <<EOL
 EOL
 fi
 
-if [ "$GAMEESO_MODE" = "production" ]; then
-cat >>/usr/bin/start_gameeso <<EOL
-		service nginx start
-EOL
-fi
-
 fi
 
 cat >>/usr/bin/start_gameeso <<EOL
