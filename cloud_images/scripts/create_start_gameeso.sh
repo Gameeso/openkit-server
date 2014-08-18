@@ -24,6 +24,12 @@ cat >>/usr/bin/start_gameeso <<EOL
 EOL
 fi
 
+if [ "$GAMEESO_MODE" = "production" ]; then
+cat >>/usr/bin/start_gameeso <<EOL
+		service nginx start
+EOL
+fi
+
 fi
 
 cat >>/usr/bin/start_gameeso <<EOL
@@ -43,6 +49,11 @@ if [ ! -d "openkit-server" ]; then
 	cp /root/ok_config.rb config/ok_config.rb
 
 	bundle install --path vendor/bundle
+
+	if [ "$GAMEESO_MODE" = "production" ]; then
+		bundle exec bin/rake assets:precompile
+	fi
+
 	bundle exec bin/rake db:setup
 fi
 

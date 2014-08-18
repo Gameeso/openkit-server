@@ -84,17 +84,20 @@
       "override": {
         "digitalocean": {
           "scripts": [
-            "scripts/create_start_gameeso.sh"
+            "scripts/create_start_gameeso.sh",
+            "scripts/cleanup.sh"
           ]
         },
         "docker": {
           "scripts": [
-            "scripts/create_start_gameeso.sh"
+            "scripts/create_start_gameeso.sh",
+            "scripts/cleanup.sh"
           ]
         },
         "amazon-ebs": {
           "scripts": [
-            "scripts/create_start_gameeso.sh"
+            "scripts/create_start_gameeso.sh",
+            "scripts/cleanup.sh"
           ]
         },
         "virtualbox-iso": {
