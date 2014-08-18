@@ -5,10 +5,10 @@ module OKConfig
     @config_hash ||= begin
     {
       :database_name            => nil || 'ok_api',
-      :database_username        => nil || 'root',
-      :database_password        => nil || 'gameeso',
-      :database_host            => nil || '127.0.0.1',
-      :database_port            => nil || '3306',
+      :database_username        => nil ||  'root',
+      :database_password        => nil || ENV['MYSQL_ENV_MYSQL_ROOT_PASSWORD'] || 'gameeso',
+      :database_host            => nil || ENV['MYSQL_PORT_3306_TCP_ADDR'] || '127.0.0.1',
+      :database_port            => nil || ENV['MYSQL_PORT_3306_TCP_PORT'] || '3306',
       :redis_host               => nil || '127.0.0.1',
       :redis_port               => nil || '6379',
       :mail_domain              => nil || 'www.example.com',
