@@ -148,7 +148,7 @@
   "builders": [
     {
       "type": "docker",
-      "image": "ubuntu",
+      "image": "ubuntu:14.04",
       "export_path": "gameeso_docker.tar"
     },
     {

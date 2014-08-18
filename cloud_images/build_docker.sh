@@ -9,17 +9,17 @@ docker import - < gameeso_docker.tar gameeso_staging
 
 # Build a new production Docker image using metadata only Dockerfile
 echo "Add in Docker metadata"
-docker build -t="gameeso_prod" ./config/dockerfiles/
-echo "Final gameeso_prod image built, ready for docker save"
+docker build -t="gameeso" ./config/dockerfiles/
+echo "Final gameeso image built, ready for docker save"
 
-docker save 'gameeso_prod' > gameeso_docker_final.tar
+docker save 'gameeso' > gameeso_docker_final.tar
 
 # Delete the previous base image
 echo "Cleaning up..."
 rm -f gameeso_docker.tar
-#docker rmi -f gameeso_staging gameeso_prod
+docker rmi -f gameeso_staging gameeso
 
 echo -e "\n\n"
 echo "Done! You can now import or upload your gameeso docker image."
 echo "It's called 'gameeso_docker_final.tar'."
-echo "Import using 'docker import - <  gameeso_docker_final.tar gameeso'"
+echo "Import using 'docker load < gameeso_docker_final.tar'"

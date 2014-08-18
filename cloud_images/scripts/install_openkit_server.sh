@@ -21,11 +21,11 @@ if [ "$GAMEESO_MODE" = "standalone" ]; then
   echo mysql-server mysql-server/root_password password gameeso | sudo debconf-set-selections
   echo mysql-server mysql-server/root_password_again password gameeso | sudo debconf-set-selections
 
-  apt-get install -y mysql-server mysql-client libmysqlclient-dev libsqlite3-dev
+  apt-get install -y mysql-server mysql-client
 else
   echo "RAILS_ENV=production" > /etc/env
   echo "Production Mode! Installing NGIX"
-  apt-get install nginx
+  apt-get install -y nginx
 cat >>/etc/nginx/sites-enabled/gameeso <<EOL
 server {
   listen  80;
@@ -57,7 +57,7 @@ server {
 EOL
 fi
 
-apt-get install -y git nodejs ruby2.1 ruby2.1-dev libxslt1-dev redis-server build-essential
+apt-get install -y libmysqlclient-dev libsqlite3-dev git nodejs ruby2.1 ruby2.1-dev libxslt1-dev redis-server build-essential
 
 ln -s /usr/bin/nodejs /usr/bin/node
 
