@@ -25,11 +25,14 @@ if [ ! -d "openkit-server" ]; then
   cp /root/ok_config.rb config/ok_config.rb
 
   bundle install --path vendor/bundle
-  bundle exec bin/rake db:setup RAILS_ENV=development
+  bundle exec bin/rake db:setup
+  if [ "$GAMEESO_MODE" = "production" ]; then
+    bundle exec bin/rake assets:precompile
+  fi
 fi
 
 cd /var/gameeso/openkit-server/dashboard
-bin/rails server -d
+bin/rails server
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|

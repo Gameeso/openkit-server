@@ -27,7 +27,6 @@ fi
 fi
 
 cat >>/usr/bin/start_gameeso <<EOL
-
 mkdir -p /var/gameeso
 chmod 7777 -R /var/gameeso
 
@@ -36,24 +35,26 @@ cd /var/gameeso
 if [ ! -d "openkit-server" ]; then
 	echo "Cloning & installing latest Gameeso server development branch"
 	git clone -b development https://github.com/Gameeso/openkit-server.git
-	cd openkit-server/dashboard
 
-	# Copy config files
+	echo "Configuring the NodeJS-side"
+	cd openkit-server/openkit_importer
+	npm install
+
+	cd ../dashboard
+
+	echo "Copying config files..."
 	cp config/database.sample.yml config/database.yml
 	cp /root/ok_config.rb config/ok_config.rb
 
 	bundle install --path vendor/bundle
-
+	bundle exec bin/rake db:setup
 	if [ "$GAMEESO_MODE" = "production" ]; then
 		bundle exec bin/rake assets:precompile
 	fi
-
-	bundle exec bin/rake db:setup
 fi
 
 cd /var/gameeso/openkit-server/dashboard
 bin/rails server
-
 EOL
 
 chmod a+x /usr/bin/start_gameeso
