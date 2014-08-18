@@ -24,37 +24,6 @@ if [ "$GAMEESO_MODE" = "standalone" ]; then
   apt-get install -y mysql-server mysql-client
 else
   echo "RAILS_ENV=production" > /etc/env
-  echo "Production Mode! Installing NGIX"
-  apt-get install -y nginx
-cat >>/etc/nginx/sites-enabled/gameeso <<EOL
-server {
-  listen  80;
-  server_name api.*;
-  location / {
-    proxy_set_header X-Real-IP  $remote_addr;
-    proxy_set_header X-Forwarded-For $remote_addr;
-    proxy_set_header Host $host;
-    proxy_pass http://localhost:3000/;
-    client_max_body_size 512M;
-    }
-  }
-
-  server {
-    listen  80;
-    server_name developer.*;
-    location /assets {
-      alias /var/gameeso/openkit-server/dashboard/public/assets/;
-    }
-
-    location / {
-      proxy_set_header X-Real-IP  $remote_addr;
-      proxy_set_header X-Forwarded-For $remote_addr;
-      proxy_set_header Host $host;
-      proxy_pass http://localhost:3000/;
-      client_max_body_size 512M;
-    }
-}
-EOL
 fi
 
 apt-get install -y libmysqlclient-dev libsqlite3-dev git nodejs ruby2.1 ruby2.1-dev libxslt1-dev redis-server build-essential
