@@ -213,11 +213,12 @@ module.exports = (attrs) ->
                     created_at: new Date
 
                   trx.insert(tagObj).into("taggings").then((inserts) ->
-                    for score in leaderboard.scores
-                      scoreQueue.push score
+                    trx("tags").where("name", "=", "v1").increment("taggings_count", 1).then ->                    
+                      for score in leaderboard.scores
+                        scoreQueue.push score
 
-                    if leaderboard.scores.length == 0
-                      next()
+                      if leaderboard.scores.length == 0
+                        next()
                   )
 
                 return null
