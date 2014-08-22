@@ -28,6 +28,11 @@ module.exports = (attrs) ->
   multi = redis.multi()
   knex.transaction((trx) ->
 
+    app_id = attrs.app_id
+    secure_key = attrs.secure_key
+    data = attrs.data
+    importData = {}
+
     defaultCatch = (error) ->
       trx.rollback()
       log "Error:", error, "\nRolled back."
@@ -37,11 +42,6 @@ module.exports = (attrs) ->
       process.exit 1
 
     mapper.defaultCatch = defaultCatch
-
-    app_id = attrs.app_id
-    secure_key = attrs.secure_key
-    data = attrs.data
-    importData = {}
 
     async.waterfall [
       (callback) ->
@@ -64,7 +64,14 @@ module.exports = (attrs) ->
             importData.leaderboardTagID = rows[0].id
             callback null
           else
-            callback "v1-tag not found"
+            trx.insert(
+              name: "v1"
+              taggings_count: 0
+            ).into("tags").then (inserts) ->
+              if inserts.length > 0
+                callback null
+              else
+                callback "Failed to create leaderboard v1 tag"
         )
 
       (callback) ->
@@ -253,8 +260,8 @@ module.exports = (attrs) ->
       log "error: ", err
       log "result: ", result
 
-      if error?
-        defaultCatch()
+      if err?
+        defaultCatch(error)
         return
 
       # drains multi queue and runs atomically
@@ -263,12 +270,9 @@ module.exports = (attrs) ->
         return
 
       trx.commit()
-      setTimeout(->
-        redis.set "secure_key:#{secure_key}", "success"
-      , 10000)
+      redis.set "secure_key:#{secure_key}", "success"
       log "Done!"
       mapper.dump()
-
       attrs.callback() if attrs.callback?
 
     return null

@@ -1,10 +1,10 @@
-<% if defined?(params[:secure_key]) %>
+<% if params[:secure_key] != nil %>
 
 <% if defined?(@running) %>
 
 <div class="session">
   <div class="box">
-    <%= image_tag("dataiscoming.jpg" class: "box_image") %>
+    <%= image_tag("dataiscoming.jpg", class: "box_image") %>
     <br />
     <p class="box_text">
       <b align="center">
@@ -13,15 +13,18 @@
 
       Your data is now importing in the background. Sit back and relax while we do the work for you!
       <br />
-      We will refresh this page every 3 seconds.<br /><br />
+      We will refresh this page every 5 seconds.<br /><br />
+      <script>
+        window.setTimeout(function(){
+          window.location.reload();
+        }, 5000)
+      </script>
     </p>
-    <p align="center"><a class="green_button" href="<%=app_path(@app)%>">Go to Application</a></p><br />
+    <p align="center"><a class="green_button" href="<%=app_path(@app)%>">Skip to Application</a></p><br />
   </div>
 </div>
 
-<% else %>
-
-<% if defined?(@error) %>
+<% elsif defined?(@error) %>
   <div id="error_explanation">
     <h2>There was an error while importing your OpenKit-data: </h2>
 
@@ -31,9 +34,7 @@
 
     The changes have been rolled back.
   </div>
-<% end %>
-
-<% if defined?(@success) %>
+<% elsif defined?(@success) %>
 
   <div class="session">
     <div class="box">
@@ -46,15 +47,25 @@
 
         Your leaderboards, scores and users have been successfully imported to your application.
         <br />
-        You can now go back to your application now.<br /><br />
+        You can go back to your application now.<br /><br />
       </p>
       <p align="center"><a class="green_button" href="<%=app_path(@app)%>">Go to Application</a></p><br />
     </div>
   </div>
 
+<% else %>
+
+  <div id="error_explanation">
+    <h2>The secure key '<%=params[:secure_key]%>' does not exist anymore :(</h2>
+
+    <ul>
+      <li>It propably already finised</li>
+      <li>Click <a href="<%=app_path(@app)%>">here</a> to go back to your application</li>
+    </ul>
+  </div>
 
 <% end %>
-<% end %>
+
 <% else %>
 
 <div class="col_75 center">

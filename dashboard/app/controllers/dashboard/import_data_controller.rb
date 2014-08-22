@@ -60,6 +60,7 @@ class Dashboard::ImportDataController < ApplicationController
 
       if secure_key_status == "success"
         @success = true
+        OKRedis.del("secure_key:#{secure_key}")
       end
 
       if secure_key_status == "error"
