@@ -164,7 +164,11 @@ module.exports = (attrs) ->
             .then (rows) ->
               if rows.length == 0
                 # just insert
+                k = "leaderboard:#{obj.leaderboard_id}:players"
+
                 insertScore()
+                multi.sadd k, obj.user_id
+
               else
                 # check if larger than score we import now, if not then we replace the value (highest score counts)
                 row = rows[0]
@@ -213,7 +217,7 @@ module.exports = (attrs) ->
                     created_at: new Date
 
                   trx.insert(tagObj).into("taggings").then((inserts) ->
-                    trx("tags").where("name", "=", "v1").increment("taggings_count", 1).then ->                    
+                    trx("tags").where("name", "=", "v1").increment("taggings_count", 1).then ->
                       for score in leaderboard.scores
                         scoreQueue.push score
 
@@ -247,6 +251,11 @@ module.exports = (attrs) ->
 
       if error?
         defaultCatch()
+        return
+
+      # drains multi queue and runs atomically
+      multi.exec (err, replies) ->
+        log "Redis says: ", replies, "\nerror: ", err
         return
 
       trx.commit()

@@ -27,7 +27,7 @@ if argv.length == 8
       data: json
       callback: ->
         # Delete temporary upload (we dont need it anymore)
-        #fs.unlink(data_file)
+        fs.unlink(data_file)
         process.exit 0
     )
 

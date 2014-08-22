@@ -37,7 +37,7 @@ if [ ! -d "openkit-server" ]; then
 fi
 
 cd /var/gameeso/openkit-server/dashboard
-bin/rails server
+bin/rails server &
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
