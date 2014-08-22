@@ -3,9 +3,12 @@
 The Gameeso server is what maintains and keeps your user's data. This is where your games connect to.
 There are a few ways to get a Gameeso Server.
 
+Please report any issues to [gameeso@codebuffet.co](mailto:gameeso@codebuffet.co) or post a bug on [Github issues](https://github.com/Gameeso/openkit-server/issues)!
+
 
 ##Hosted Solution (easiest way)
-**Coming soon...**
+Gameeso Hosted is currently in Beta and runs on the latest Docker-image.
+Check it out [here](http://gameeso.com)
 
 ##Local server (for testing or development)
 **Platform-agnostic**
