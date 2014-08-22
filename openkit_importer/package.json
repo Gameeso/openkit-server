@@ -6,10 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Peter Willemsen <peter@codebuffet.co>",
   "license": "BSD-2-Clause",
   "dependencies": {
     "mysql": "~2.4.2",
-    "knex": "~0.6.22"
+    "knex": "~0.6.22",
+    "redis": "~0.12.1",
+    "hiredis": "~0.1.17"
   }
 }

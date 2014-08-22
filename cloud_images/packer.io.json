@@ -34,7 +34,7 @@
     {
       "type": "file",
       "source": "{{user `config_file`}}",
-      "destination": "/root/ok_config.rb"
+      "destination": "/home/gameeso/ok_config.rb"
     },
     {
       "environment_vars": [

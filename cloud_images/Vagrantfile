@@ -22,10 +22,15 @@ if [ ! -d "openkit-server" ]; then
 
   echo "Copying config files..."
   cp config/database.sample.yml config/database.yml
-  cp /root/ok_config.rb config/ok_config.rb
+  cp /home/gameeso/ok_config.rb config/ok_config.rb
 
   bundle install --path vendor/bundle
   bundle exec bin/rake db:setup
+
+  # Update taggings, OpenKit used to run a old acts_as_taggable_on_engine
+  bundle exec bin/rake acts_as_taggable_on_engine:install:migrations
+  bundle exec	bin/rake db:migrate
+
   if [ "$GAMEESO_MODE" = "production" ]; then
     bundle exec bin/rake assets:precompile
   fi

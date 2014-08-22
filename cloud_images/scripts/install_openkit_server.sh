@@ -16,19 +16,27 @@ add-apt-repository -y ppa:chris-lea/node.js
 
 apt-get update
 
+# Boost Ruby
+cat >>/etc/environment <<EOL
+    RUBY_GC_HEAP_INIT_SLOTS=1000000 # 1M
+    RUBY_GC_HEAP_FREE_SLOTS=500000  # 0.5M
+    RUBY_GC_HEAP_GROWTH_FACTOR=1.1
+    RUBY_GC_HEAP_GROWTH_MAX_SLOTS=10000000 # 10M
+    RUBY_GC_MALLOC_LIMIT_MAX=1000000000    # 1G
+    RUBY_GC_MALLOC_LIMIT_GROWTH_FACTOR=1.1
+EOL
+
 if [ "$GAMEESO_MODE" = "standalone" ]; then
-  echo "RAILS_ENV=development" > /etc/env
+  echo "RAILS_ENV=development" >> /etc/environment
   echo mysql-server mysql-server/root_password password gameeso | sudo debconf-set-selections
   echo mysql-server mysql-server/root_password_again password gameeso | sudo debconf-set-selections
 
   apt-get install -y mysql-server mysql-client
 else
-  echo "RAILS_ENV=production" > /etc/env
+  echo "RAILS_ENV=production" >> /etc/environment
 fi
 
 apt-get install -y libmysqlclient-dev libsqlite3-dev git nodejs ruby2.1 ruby2.1-dev libxslt1-dev redis-server build-essential
-
-ln -s /usr/bin/nodejs /usr/bin/node
 
 # CoffeeScript transpiler for OpenKit-Importer
 npm install -g coffee-script
