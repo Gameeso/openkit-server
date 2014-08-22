@@ -2,6 +2,7 @@ module Dashboard
 
 class Dashboard::ImportDataController < ApplicationController
   before_filter :set_app
+  @@errJsonFail = "Import failed because the file you uploaded is not a valid JSON file."
 
   require 'json'
 
@@ -14,7 +15,6 @@ class Dashboard::ImportDataController < ApplicationController
   end
 
   def create
-    errJsonFail = "Import failed because the file you uploaded is not a valid JSON file."
 
     if request.post?
       uploaded_io = params[:datafile]
@@ -35,6 +35,7 @@ class Dashboard::ImportDataController < ApplicationController
         dbConfigString = "#{OKConfig[:database_host]} #{OKConfig[:database_username]} #{OKConfig[:database_password]} #{OKConfig[:database_name]}"
 
         # Run the importer coffeescript-program, check it's result!
+        secure_key_status = OKRedis.set("secure_key:#{secure_key}", "importing")
         command = "coffee \"#{ importerScript }\" #{dbConfigString} #{@app.id} \"#{ fileName }\" \"#{secure_key}\" &"
         logger.info "running #{command}"
         result = system(command)
@@ -42,7 +43,7 @@ class Dashboard::ImportDataController < ApplicationController
         redirect_to app_import_data_path(@app, :secure_key => secure_key)
 
       else
-        @error = errJsonFail
+        @error = @@errJsonFail
       end
     end
   end
@@ -64,7 +65,7 @@ class Dashboard::ImportDataController < ApplicationController
       end
 
       if secure_key_status == "error"
-        @error = errJsonFail
+        @error = @@errJsonFail
       end
 
     end
