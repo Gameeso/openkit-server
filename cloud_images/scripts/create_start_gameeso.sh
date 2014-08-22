@@ -40,6 +40,10 @@ if [ ! -d "openkit-server" ]; then
 	cd openkit-server/openkit_importer
 	npm install
 
+	echo "Creating Push-cert folders"
+	mkdir -p /var/gameeso/apple_certs/production
+	mkdir -p /var/gameeso/apple_certs/sandbox
+
 	cd ../dashboard
 
 	echo "Copying config files..."
@@ -48,10 +52,6 @@ if [ ! -d "openkit-server" ]; then
 
 	bundle install --path vendor/bundle
 	bundle exec bin/rake db:setup
-
-	# Update taggings, OpenKit used to run a old acts_as_taggable_on_engine
-	bundle exec bin/rake acts_as_taggable_on_engine:install:migrations
-	bundle exec	bin/rake db:migrate
 
 	if [ "$GAMEESO_MODE" = "production" ]; then
 		bundle exec bin/rake assets:precompile

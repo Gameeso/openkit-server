@@ -18,6 +18,10 @@ if [ ! -d "openkit-server" ]; then
   cd openkit-server/openkit_importer
   npm install
 
+  echo "Creating Push-cert folders"
+  mkdir -p /var/gameeso/apple_certs/production
+  mkdir -p /var/gameeso/apple_certs/sandbox
+
   cd ../dashboard
 
   echo "Copying config files..."

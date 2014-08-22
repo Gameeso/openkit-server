@@ -21,9 +21,9 @@ module OKConfig
       :rails_secret_token       => nil || '15a4c101b9dc5a9eb0a95b81a983aa0a3ffb58c4dc910ca102a226402f39349c8cb267a6ac90371459001ad7aabab99a85ce5ba23f30abc55471f6ef788e972f',
       :rails_session_store_key  => nil || '_openkit_session',
       :apns_host                => nil || 'gateway.push.apple.com',
-      :apns_pem_path            => nil || '/var/openkit/apple_certs/production',
+      :apns_pem_path            => nil || '/var/gameeso/apple_certs/production',
       :apns_sandbox_host        => nil || 'gateway.sandbox.push.apple.com',
-      :apns_sandbox_pem_path    => nil || '/var/openkit/apple_certs/sandbox',
+      :apns_sandbox_pem_path    => nil || '/var/gameeso/apple_certs/sandbox',
     }
     end
   end
