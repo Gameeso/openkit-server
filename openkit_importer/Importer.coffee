@@ -38,7 +38,6 @@ module.exports = (attrs) ->
       log "Error:", error, "\nRolled back."
       redis.set "secure_key:#{secure_key}", "error"
       redis.set "secure_key:#{secure_key}" + ":internal", "Error: " + error
-      redis.set "secure_key:#{secure_key}" + ":internal_data_file", JSON.stringify(attrs.data)
       process.exit 1
 
     mapper.defaultCatch = defaultCatch
