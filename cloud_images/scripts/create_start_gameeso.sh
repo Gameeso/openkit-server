@@ -11,8 +11,22 @@ exec /usr/bin/start_gameeso
 end script
 EOL
 
-cat >/usr/bin/start_gameeso <<EOL
+# Upstart doesnt work on Docker for obvious reasons, so we run the dependency stuff on our own
+if [ "$PACKER_BUILDER_TYPE" = "docker" ]; then
+cat >>/usr/bin/start_gameeso <<EOL
+redis-server &
+EOL
 
+# only start MySQL if in standalone mode
+if [ "$GAMEESO_MODE" = "standalone" ]; then
+cat >>/usr/bin/start_gameeso <<EOL
+		/etc/init.d/mysql start
+EOL
+fi
+
+fi
+
+cat >>/usr/bin/start_gameeso <<EOL
 mkdir -p /var/gameeso
 chmod 7777 -R /var/gameeso
 
@@ -21,19 +35,31 @@ cd /var/gameeso
 if [ ! -d "openkit-server" ]; then
 	echo "Cloning & installing latest Gameeso server development branch"
 	git clone -b development https://github.com/Gameeso/openkit-server.git
-	cd openkit-server/dashboard
 
-	# Copy config files
+	echo "Configuring the NodeJS-side"
+	cd openkit-server/openkit_importer
+	npm install
+
+	cd ../dashboard
+
+	echo "Copying config files..."
 	cp config/database.sample.yml config/database.yml
-	cp config/ok_config.sample.rb config/ok_config.rb
+	cp /home/gameeso/ok_config.rb config/ok_config.rb
 
 	bundle install --path vendor/bundle
-	bundle exec bin/rake db:setup RAILS_ENV=development
+	bundle exec bin/rake db:setup
+
+	# Update taggings, OpenKit used to run a old acts_as_taggable_on_engine
+	bundle exec bin/rake acts_as_taggable_on_engine:install:migrations
+	bundle exec	bin/rake db:migrate
+
+	if [ "$GAMEESO_MODE" = "production" ]; then
+		bundle exec bin/rake assets:precompile
+	fi
 fi
 
 cd /var/gameeso/openkit-server/dashboard
 bin/rails server
-
 EOL
 
 chmod a+x /usr/bin/start_gameeso

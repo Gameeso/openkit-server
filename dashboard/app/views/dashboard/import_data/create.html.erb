@@ -1,0 +1,33 @@
+<% if defined?(@error) %>
+  <div id="error_explanation">
+    <h2>There was an error while importing your OpenKit-data: </h2>
+
+    <ul>
+    <li><%=@error%></li>
+    </ul>
+
+    The changes have been rolled back.
+  </div>
+<% end %>
+
+<% if defined?(@success) %>
+
+  <div class="session">
+    <div class="box">
+      <%= image_tag("wedidit.jpg", class: "box_image") %>
+      <br />
+      <p class="box_text">
+        <b align="center">
+          You did it!
+        </b>
+
+        Your leaderboards, scores and users have been successfully imported to your application.
+        <br />
+        You can now go back to your application now.<br /><br />
+      </p>
+      <p align="center"><a class="green_button" href="<%=app_path(@app)%>">Go to Application</a></p><br />
+    </div>
+  </div>
+
+
+<% end %>

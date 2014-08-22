@@ -1,5 +1,7 @@
 OKDashboard::Application.routes.draw do
 
+  get 'import_data/index'
+
   scope :module => :api, :defaults => {:format => :json} do
 
     # 1.0 API
@@ -74,6 +76,7 @@ OKDashboard::Application.routes.draw do
           delete :delete_sandbox_scores
         end
         resources :achievements
+        resources :import_data
         resource :sandbox_push_cert,          only: [:new, :create, :destroy]
         resource :production_push_cert,       only: [:new, :create, :destroy]
 

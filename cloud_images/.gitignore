@@ -5,5 +5,8 @@ output-virtualbox-iso/
 
 # For built boxes
 *.box
+gameeso_docker.tar
+gameeso_docker_final.tar
+last_gameeso_import
 
 packer_variables.json

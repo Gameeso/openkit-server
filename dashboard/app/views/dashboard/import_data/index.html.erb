@@ -1,0 +1,48 @@
+<div class="col_75 center">
+  <div class="box">
+
+<%= form_tag({action: :index}, multipart: true) do %>
+
+  <h2>Import OpenKit Data</h2>
+
+  <div class="list">
+    Many of you have propably used OpenKit before hearing about Gameeso, and also saved your OpenKit data using the Exporter released way before our beta to secure data, preventing players losing their game stats (and preventing you from losing your users!)
+    <br /><br />
+    To import your data back into Gameeso, please upload your JSON below.
+    <br /><br />
+    <ul>
+      <li>
+        Importing data works only if the data is exported using the OpenKit exporter (see: <a href="https://github.com/Gameeso/OpenKit-Exporter">https://github.com/Gameeso/OpenKit-Exporter</a>)
+      </li>
+      <li>
+        Imported data can safely coexist with existing Gameeso data. (this means that if you already run your game trough Gameeso and have openkit data to import you can safely do that)
+      </li>
+      <li>
+        When a user already has a score in a leaderboard before importing (and there is a leaderboard with the same name both in the imported data and in Gameeso), <b>the highest score counts</b>.
+        <ul class="sublist">
+          <li>
+            That means that if you have a leaderboard with the same name in the import data, AND a player has a score on that leaderboard,
+            the user's score will be replaced only if the imported score is higher, otherwise his/her current score stays.
+          </li>
+        </ul>
+      </li>
+      <li>
+        If you have a leaderboard with the same name already in your app, OpenKit importer will merge the leaderboards by adding the scores from the leaderboard you're importing to the exisitng leaderboard.
+        <ul class="sublist">
+          <li>e.g if you have a leaderboard named "lol" in Gameeso with 3 scores, and a leaderboard named "lol" in your OpenKit export data with 10 scores, you will end up with 1 leaderboard named "lol" in Gameeso, with 13 scores in it.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <b>If you do not wish data to be merged like the conditions above, please create a new application on Gameeso and upload your data on the new app to make sure you start fresh.</b>
+
+    <br /><br />
+    <%= file_field_tag :datafile %>
+  </div>
+
+  <%= submit_tag "Import Data" %>
+
+<% end %>
+
+</div>
+</div>

@@ -2,23 +2,102 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
+      "execute_command": "sh '{{.Path}}' {{user `user_password`}}",
+      "override": {
+        "digitalocean": {
+          "scripts": [
+            "scripts/setup_default_user.sh"
+          ]
+        },
+        "docker": {
+          "scripts": [
+            "scripts/setup_default_user.sh"
+          ]
+        },
+        "amazon-ebs": {
+          "scripts": [
+            "scripts/setup_default_user.sh"
+          ]
+        },
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        },
+        "vmware-iso": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        }
+      }
+    },
+    {
+      "type": "file",
+      "source": "{{user `config_file`}}",
+      "destination": "/home/gameeso/ok_config.rb"
+    },
+    {
+      "environment_vars": [
+        "GAMEESO_MODE='{{user `mode`}}'",
+        "GAMEESO_USER_PASSWORD='{{user `user_password`}}'"
+      ],
+      "type": "shell",
+      "execute_command": "echo '{{user `user_password`}}'|sudo -S {{ .Vars }} sh '{{.Path}}'",
       "scripts": [
         "scripts/install_openkit_server.sh"
       ]
     },
     {
       "type": "shell",
-      "execute_command": "echo 'gameeso'|sudo -S sh '{{.Path}}'",
+      "execute_command": "echo '{{user `user_password`}}'|sudo -S sh '{{.Path}}'",
       "override": {
+        "docker": {
+          "scripts": [
+            "scripts/dummy.sh"
+          ]
+        },
         "digitalocean": {
           "scripts": [
-            "scripts/create_start_gameeso.sh"
+            "scripts/setup_firewall.sh"
           ]
         },
         "amazon-ebs": {
           "scripts": [
-            "scripts/create_start_gameeso.sh"
+            "scripts/setup_firewall.sh"
+          ]
+        },
+        "virtualbox-iso": {
+          "scripts": [
+            "scripts/setup_firewall.sh"
+          ]
+        },
+        "vmware-iso": {
+          "scripts": [
+            "scripts/setup_firewall.sh"
+          ]
+        }
+      }
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo '{{user `user_password`}}'|sudo -S {{ .Vars }} sh '{{.Path}}'",
+      "override": {
+        "digitalocean": {
+          "scripts": [
+            "scripts/create_start_gameeso.sh",
+            "scripts/cleanup.sh"
+          ]
+        },
+        "docker": {
+          "scripts": [
+            "scripts/create_start_gameeso.sh",
+            "scripts/cleanup.sh"
+          ]
+        },
+        "amazon-ebs": {
+          "scripts": [
+            "scripts/create_start_gameeso.sh",
+            "scripts/cleanup.sh"
           ]
         },
         "virtualbox-iso": {
@@ -40,37 +119,12 @@
           ]
         }
       }
-    },
-    {
-      "type": "shell",
-      "execute_command": "sh '{{.Path}}' {{user `user_password`}}",
-      "override": {
-        "digitalocean": {
-          "scripts": [
-            "scripts/setup_default_user.sh"
-          ]
-        },
-        "amazon-ebs": {
-          "scripts": [
-            "scripts/setup_default_user.sh"
-          ]
-        },
-        "virtualbox-iso": {
-          "scripts": [
-            "scripts/dummy.sh"
-          ]
-        },
-        "vmware-iso": {
-          "scripts": [
-            "scripts/dummy.sh"
-          ]
-        }
-      }
     }
   ],
   "post-processors": [
     {
       "type": "vagrant",
+      "only": ["virtualbox-iso", "vmware-iso"],
       "vagrantfile_template": "Vagrantfile",
       "override": {
         "virtualbox": {
@@ -83,13 +137,20 @@
     }
   ],
   "variables": {
+    "mode": "standalone",
     "digitalocean_client_id": "",
     "digitalocean_api_key": "",
     "amazon_access_key": "",
     "amazon_secret_key": "",
-    "user_password": "gameeso"
+    "user_password": "gameeso",
+    "config_file": "config/ok_config.sample.rb"
   },
   "builders": [
+    {
+      "type": "docker",
+      "image": "ubuntu:14.04",
+      "export_path": "gameeso_docker.tar"
+    },
     {
       "type": "digitalocean",
       "client_id": "{{user `digitalocean_client_id`}}",
