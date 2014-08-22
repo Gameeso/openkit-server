@@ -33,6 +33,7 @@
     </ul>
 
     The changes have been rolled back.
+    If you like to have some assistance on this issue, please send a email to <a href="mailto:gameeso@codebuffet.co">gameeso@codebuffet.co</a> and include your process key (<%=params[:secure_key]%> as it is tied to helpful info)
   </div>
 <% elsif defined?(@success) %>
 
@@ -97,14 +98,14 @@
         </ul>
       </li>
       <li>
-        If you have a leaderboard with the same name already in your app, OpenKit importer will merge the leaderboards by adding the scores from the leaderboard you're importing to the exisitng leaderboard.
+        If you have a leaderboard with the same name already in your app, OpenKit importer will merge the leaderboards by adding the scores from the leaderboard you're importing to the existing leaderboard.
         <ul class="sublist">
           <li>e.g if you have a leaderboard named "lol" in Gameeso with 3 scores, and a leaderboard named "lol" in your OpenKit export data with 10 scores, you will end up with 1 leaderboard named "lol" in Gameeso, with 13 scores in it.</li>
         </ul>
       </li>
     </ul>
 
-    <b>If you do not wish data to be merged like the conditions above, please create a new application on Gameeso and upload your data on the new app to make sure you start fresh.</b>
+    <b>If you do not wish data to be merged with the conditions noted above, please create a new application on Gameeso and upload your data on the new app to make sure you start fresh.</b>
 
     <br /><br />
     <%= file_field_tag :datafile %>

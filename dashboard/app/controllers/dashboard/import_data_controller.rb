@@ -64,7 +64,7 @@ class Dashboard::ImportDataController < ApplicationController
       end
 
       if secure_key_status == "error"
-        @error = true
+        @error = errJsonFail
       end
 
     end
