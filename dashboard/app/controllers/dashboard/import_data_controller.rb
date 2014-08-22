@@ -38,13 +38,9 @@ class Dashboard::ImportDataController < ApplicationController
         command = "coffee \"#{ importerScript }\" #{dbConfigString} #{@app.id} \"#{ fileName }\" \"#{secure_key}\" &"
         logger.info "running #{command}"
         result = system(command)
-        logger.info "result: #{result}"
 
-        if result
-          @success = true
-        else
-          @error = errJsonFail
-        end
+        redirect_to app_import_data_path(@app, :secure_key => secure_key)
+
       else
         @error = errJsonFail
       end
@@ -52,7 +48,25 @@ class Dashboard::ImportDataController < ApplicationController
   end
 
   def index
+    if request.get?
+      secure_key = params[:secure_key]
+      secure_key_status = OKRedis.get("secure_key:#{secure_key}")
 
+      logger.info "secure_key_status: #{secure_key_status}"
+
+      if secure_key_status == "importing"
+        @running = true
+      end
+
+      if secure_key_status == "success"
+        @success = true
+      end
+
+      if secure_key_status == "error"
+        @error = true
+      end
+
+    end
   end
 end
 end

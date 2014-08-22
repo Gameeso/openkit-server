@@ -22,7 +22,7 @@ if argv.length == 9
 
     # Connect to MySQL to handle the importing
     connectToDB()
-    redis.set secure_key, "importing"
+    redis.set "secure_key:#{secure_key}", "importing"
     importData(
       app_id: app_id
       data: json
