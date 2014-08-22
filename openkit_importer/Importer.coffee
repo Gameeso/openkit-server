@@ -64,7 +64,6 @@ module.exports = (attrs) ->
         )
 
       (callback) ->
-        callbackCount = 0
         fbIDPreventer = new DuplicatePreventer()
         googleIDPreventer = new DuplicatePreventer()
         gameCenterIDPreventer = new DuplicatePreventer()
@@ -76,8 +75,6 @@ module.exports = (attrs) ->
 
           if fbIDPreventer.isDuplicate(user.fb_id) or googleIDPreventer.isDuplicate(user.google_id) or gameCenterIDPreventer.isDuplicate(user.gamecenter_id)
             defaultCatch()
-
-          callbackCount++
 
           trx("users").where(->
               @where(->
@@ -109,7 +106,6 @@ module.exports = (attrs) ->
               obj.developer_id = importData.app.developer_id
 
               trx.insert(obj).into("users").then((inserts) ->
-                callbackCount--
                 log "inserts: ", inserts
                 for id in inserts
                   mapper.map "user", user.id, id
@@ -120,7 +116,6 @@ module.exports = (attrs) ->
               ).catch defaultCatch
 
             else
-              callbackCount--
               for row in rows
                 mapper.map "user", user.id, row.id
 
