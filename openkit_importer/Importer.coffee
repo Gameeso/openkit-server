@@ -31,11 +31,15 @@ module.exports = (attrs) ->
     defaultCatch = (error) ->
       trx.rollback()
       log "Error:", error, "\nRolled back."
+      redis.set secure_key, "error"
+      redis.set secure_key + ":internal", "Error: " + error
+      redis.set secure_key + ":internal_data_file", JSON.stringify(attrs.data)
       process.exit 1
 
     mapper.defaultCatch = defaultCatch
 
     app_id = attrs.app_id
+    secure_key = attrs.secure_key
     data = attrs.data
     importData = {}
 
@@ -259,6 +263,7 @@ module.exports = (attrs) ->
         return
 
       trx.commit()
+      redis.set secure_key, "Success"
       log "Done!"
       mapper.dump()
 
