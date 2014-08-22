@@ -21,6 +21,11 @@ deleteKeys = (obj, keysToDelete) ->
   return obj2
 
 module.exports = (attrs) ->
+
+  # trx: mysql transaction
+  # multi: redis transaction
+
+  multi = redis.multi()
   knex.transaction((trx) ->
 
     defaultCatch = (error) ->

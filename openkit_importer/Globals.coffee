@@ -8,6 +8,8 @@ global.log = (msg) ->
     console.log.apply console, arguments_
 
 global.connectToDB = ->
+  redis = require("redis")
+  global.redis = redis.createClient()
   global.knex = require("knex")(
     client: "mysql"
     debug: yes
