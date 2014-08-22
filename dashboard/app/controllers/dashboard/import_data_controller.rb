@@ -34,13 +34,10 @@ class Dashboard::ImportDataController < ApplicationController
         dbConfigString = "#{OKConfig[:database_host]} #{OKConfig[:database_username]} #{OKConfig[:database_password]} #{OKConfig[:database_name]}"
 
         # Run the importer coffeescript-program, check it's result!
-        command = "coffee \"#{ importerScript }\" #{dbConfigString} #{@app.id} \"#{ fileName }\""
+        command = "coffee \"#{ importerScript }\" #{dbConfigString} #{@app.id} \"#{ fileName }\" &"
         logger.info "running #{command}"
         result = system(command)
         logger.info "result: #{result}"
-
-        # Delete temporary upload (we dont need it anymore)
-        File.delete fileName
 
         if result
           @success = true

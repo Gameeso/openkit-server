@@ -25,6 +25,10 @@ if argv.length == 8
     importData(
       app_id: app_id
       data: json
+      callback: ->
+        # Delete temporary upload (we dont need it anymore)
+        #fs.unlink(data_file)
+        process.exit 0
     )
 
     return
