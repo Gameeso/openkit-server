@@ -40,4 +40,5 @@ apt-get install -y libmysqlclient-dev libsqlite3-dev git nodejs ruby2.1 ruby2.1-
 
 # CoffeeScript transpiler for OpenKit-Importer
 npm install -g coffee-script
+chmod 7777 -R /home/gameeso/.npm
 gem install bundle
