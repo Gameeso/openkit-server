@@ -1,8 +1,8 @@
 apt-get -y autoremove
 apt-get -y clean
 
-echo "cleaning up gest additions"
-rm -rf VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
+echo "cleaning up guest additions"
+cd /home/gameeso && rm -rf VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
 
 echo "cleaning up dhcp leases"
 rm /var/lib/dhcp/*
