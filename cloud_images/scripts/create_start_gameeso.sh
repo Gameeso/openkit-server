@@ -59,6 +59,10 @@ if [ ! -d "openkit-server" ]; then
 fi
 
 cd /var/gameeso/openkit-server/dashboard
+
+# Delete pid file if exists
+rm tmp/pids/server.pid
+
 bin/rails server
 EOL
 

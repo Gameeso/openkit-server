@@ -37,6 +37,10 @@ if [ ! -d "openkit-server" ]; then
 fi
 
 cd /var/gameeso/openkit-server/dashboard
+
+# Delete pid file if exists
+rm tmp/pids/server.pid
+
 bin/rails server &
 
 echo "Done! Please wait a minute or 2 to make sure the server is started."
