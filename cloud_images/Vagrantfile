@@ -18,6 +18,10 @@ if [ ! -d "openkit-server" ]; then
   cd openkit-server/openkit_importer
   npm install
 
+  echo "Creating Push-cert folders"
+  mkdir -p /var/gameeso/apple_certs/production
+  mkdir -p /var/gameeso/apple_certs/sandbox
+
   cd ../dashboard
 
   echo "Copying config files..."
@@ -27,17 +31,24 @@ if [ ! -d "openkit-server" ]; then
   bundle install --path vendor/bundle
   bundle exec bin/rake db:setup
 
-  # Update taggings, OpenKit used to run a old acts_as_taggable_on_engine
-  bundle exec bin/rake acts_as_taggable_on_engine:install:migrations
-  bundle exec	bin/rake db:migrate
-
   if [ "$GAMEESO_MODE" = "production" ]; then
     bundle exec bin/rake assets:precompile
   fi
 fi
 
 cd /var/gameeso/openkit-server/dashboard
-bin/rails server
+
+# Delete pid file if exists
+rm tmp/pids/server.pid
+
+bin/rails server &
+
+echo "Done! Please wait a minute or 2 to make sure the server is started."
+echo "You can then access your local Gameeso dashboard by going to http://developer.lvh.me:3000"
+echo "Want to edit the source code? Check out the folder where you inited this vagrant box in. It will stay in-sync with the vagrant box!"
+echo "\nHappy coding!"
+echo " - Peter Willemsen"
+
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|

@@ -21,18 +21,26 @@ deleteKeys = (obj, keysToDelete) ->
   return obj2
 
 module.exports = (attrs) ->
+
+  # trx: mysql transaction
+  # multi: redis transaction
+
+  multi = redis.multi()
   knex.transaction((trx) ->
+
+    app_id = attrs.app_id
+    secure_key = attrs.secure_key
+    data = attrs.data
+    importData = {}
 
     defaultCatch = (error) ->
       trx.rollback()
       log "Error:", error, "\nRolled back."
+      redis.set "secure_key:#{secure_key}", "error"
+      redis.set "secure_key:#{secure_key}" + ":internal", "Error: " + error
       process.exit 1
 
     mapper.defaultCatch = defaultCatch
-
-    app_id = attrs.app_id
-    data = attrs.data
-    importData = {}
 
     async.waterfall [
       (callback) ->
@@ -55,11 +63,17 @@ module.exports = (attrs) ->
             importData.leaderboardTagID = rows[0].id
             callback null
           else
-            callback "v1-tag not found"
+            trx.insert(
+              name: "v1"
+              taggings_count: 0
+            ).into("tags").then (inserts) ->
+              if inserts.length > 0
+                callback null
+              else
+                callback "Failed to create leaderboard v1 tag"
         )
 
       (callback) ->
-        callbackCount = 0
         fbIDPreventer = new DuplicatePreventer()
         googleIDPreventer = new DuplicatePreventer()
         gameCenterIDPreventer = new DuplicatePreventer()
@@ -71,8 +85,6 @@ module.exports = (attrs) ->
 
           if fbIDPreventer.isDuplicate(user.fb_id) or googleIDPreventer.isDuplicate(user.google_id) or gameCenterIDPreventer.isDuplicate(user.gamecenter_id)
             defaultCatch()
-
-          callbackCount++
 
           trx("users").where(->
               @where(->
@@ -104,7 +116,6 @@ module.exports = (attrs) ->
               obj.developer_id = importData.app.developer_id
 
               trx.insert(obj).into("users").then((inserts) ->
-                callbackCount--
                 log "inserts: ", inserts
                 for id in inserts
                   mapper.map "user", user.id, id
@@ -115,7 +126,6 @@ module.exports = (attrs) ->
               ).catch defaultCatch
 
             else
-              callbackCount--
               for row in rows
                 mapper.map "user", user.id, row.id
 
@@ -164,7 +174,11 @@ module.exports = (attrs) ->
             .then (rows) ->
               if rows.length == 0
                 # just insert
+                k = "leaderboard:#{obj.leaderboard_id}:players"
+
                 insertScore()
+                multi.sadd k, obj.user_id
+
               else
                 # check if larger than score we import now, if not then we replace the value (highest score counts)
                 row = rows[0]
@@ -213,11 +227,12 @@ module.exports = (attrs) ->
                     created_at: new Date
 
                   trx.insert(tagObj).into("taggings").then((inserts) ->
-                    for score in leaderboard.scores
-                      scoreQueue.push score
+                    trx("tags").where("name", "=", "v1").increment("taggings_count", 1).then ->
+                      for score in leaderboard.scores
+                        scoreQueue.push score
 
-                    if leaderboard.scores.length == 0
-                      next()
+                      if leaderboard.scores.length == 0
+                        next()
                   )
 
                 return null
@@ -244,14 +259,19 @@ module.exports = (attrs) ->
       log "error: ", err
       log "result: ", result
 
-      if error?
-        defaultCatch()
+      if err?
+        defaultCatch(error)
+        return
+
+      # drains multi queue and runs atomically
+      multi.exec (err, replies) ->
+        log "Redis says: ", replies, "\nerror: ", err
         return
 
       trx.commit()
+      redis.set "secure_key:#{secure_key}", "success"
       log "Done!"
       mapper.dump()
-
       attrs.callback() if attrs.callback?
 
     return null

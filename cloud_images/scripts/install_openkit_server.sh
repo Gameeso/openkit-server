@@ -4,7 +4,7 @@ echo "Build Type: $PACKER_BUILDER_TYPE"
 echo "gem: --no-rdoc --no-ri" > ~/.gemrc
 
 # Permanent variables
-echo "GAMEESO_MODE=$GAMEESO_MODE" > /etc/env
+echo "GAMEESO_MODE=$GAMEESO_MODE" >> /etc/environment
 
 # I know I know... Double APT update. It's because the docker 'ubuntu' image does not have a recent APT-cache at all,
 # rendering unable to install python-software-properties & software-properties-common without updating first.
