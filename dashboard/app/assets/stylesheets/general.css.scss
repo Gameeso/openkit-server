@@ -7,12 +7,29 @@
   .top{display:none;}
 }
 
+.lastest_news_container
+{
+  .post_title
+  {
+    margin-bottom: 5px;
+    span {
+      float: right;
+    }
+  }
+}
+
 .preview_branch{background:#333;padding:20px;color:#fff;font-weight:normal;font-size:14px;}
 
 a{
   color:blue;
   @include transition;
   &:hover{color:darkblue;}
+}
+
+.linkslist
+{
+  text-decoration: none;
+  color: #000;
 }
 
 .box {
