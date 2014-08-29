@@ -1,5 +1,5 @@
 class DeveloperMailer < ActionMailer::Base
-  default from: "OpenKit <no-reply@openkit.io>"
+  default from: OKConfig[:mail_from]
   default content_type: "text/html"
 
   def password_reset_instructions(developer)

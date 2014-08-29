@@ -15,6 +15,7 @@ module OKConfig
       :mail_port                 => nil || '465',
       :mail_domain               => nil || 'example.com',
       :mail_user_name            => nil || 'username@example.com',
+      :mail_from                 => nil || 'Gameeso <noreply@gameeso.com>',
       :mail_password             => nil || 'replaceme',
       :mail_authentication       => nil || 'plain',
       :mail_enable_starttls_auto => nil || false,
