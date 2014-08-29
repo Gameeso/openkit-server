@@ -42,6 +42,7 @@ cd /var/gameeso/openkit-server/dashboard
 rm tmp/pids/server.pid
 
 bin/rails server &
+bundle exec bin/rake jobs:work &
 
 echo "Done! Please wait a minute or 2 to make sure the server is started."
 echo "You can then access your local Gameeso dashboard by going to http://developer.lvh.me:3000"

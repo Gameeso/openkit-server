@@ -63,6 +63,7 @@ cd /var/gameeso/openkit-server/dashboard
 # Delete pid file if exists
 rm tmp/pids/server.pid
 
+bundle exec bin/rake jobs:work &
 bin/rails server
 EOL
 
