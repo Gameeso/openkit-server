@@ -9,4 +9,6 @@ gameeso_docker.tar
 gameeso_docker_final.tar
 last_gameeso_import
 
+# Config files that, if exposed, might reveal user login details
 packer_variables.json
+config/ok_config.rb
