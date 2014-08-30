@@ -116,7 +116,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # end
 
   # Inline provision
-  config.vm.provision "shell", inline: $script, run: "always"
+  config.vm.provision "shell", inline: $script, run: "always", privileged: false
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.
