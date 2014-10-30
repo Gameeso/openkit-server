@@ -2,7 +2,7 @@ $ ->
   $el = $ ".lastest_news_container"
   $list = $ "<ul></ul>"
   if $el?
-    $.getJSON("http://gameeso.com/api/get_recent_posts/?callback=?", (data) ->
+    $.getJSON("https://gameeso.com/api/get_recent_posts/?callback=?", (data) ->
       try
         for post in data.posts
           $html = $ "<li></li>"
